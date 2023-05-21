@@ -1,0 +1,15 @@
+{
+  "_comment": "Rename Vanilla",
+  "block.minecraft.chiseled_bookshelf": "Oak Chiseled Bookshelf",
+
+  "block.variantchiseledbookshelves.acacia_chiseled_bookshelf": "Acacia Chiseled Bookshelf",
+  "block.variantchiseledbookshelves.bamboo_chiseled_bookshelf": "Bamboo Chiseled Bookshelf",
+  "block.variantchiseledbookshelves.birch_chiseled_bookshelf": "Birch Chiseled Bookshelf",
+  "block.variantchiseledbookshelves.cherry_chiseled_bookshelf": "Cherry Chiseled Bookshelf",
+  "block.variantchiseledbookshelves.dark_oak_chiseled_bookshelf": "Dark Oak Chiseled Bookshelf",
+  "block.variantchiseledbookshelves.jungle_chiseled_bookshelf": "Jungle Chiseled Bookshelf",
+  "block.variantchiseledbookshelves.mangrove_chiseled_bookshelf": "Mangrove Chiseled Bookshelf",
+  "block.variantchiseledbookshelves.spruce_chiseled_bookshelf": "Spruce Chiseled Bookshelf",
+  "block.variantchiseledbookshelves.crimson_chiseled_bookshelf": "Crimson Chiseled Bookshelf",
+  "block.variantchiseledbookshelves.warped_chiseled_bookshelf": "Warped Chiseled Bookshelf"
+}

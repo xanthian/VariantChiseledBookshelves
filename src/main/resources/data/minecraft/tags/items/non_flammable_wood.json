@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    {"id": "variantchiseledbookshelves:warped_chiseled_bookshelf", "required": false},
+    {"id": "variantchiseledbookshelves:crimson_chiseled_bookshelf", "required": false}
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    {"id": "variantchiseledbookshelves:acacia_chiseled_bookshelf", "required": false},
+    {"id": "variantchiseledbookshelves:birch_chiseled_bookshelf", "required": false},
+    {"id": "variantchiseledbookshelves:bamboo_chiseled_bookshelf", "required": false},
+    {"id":"variantchiseledbookshelves:cherry_chiseled_bookshelf", "required": false},
+    {"id": "variantchiseledbookshelves:dark_oak_chiseled_bookshelf", "required": false},
+    {"id": "variantchiseledbookshelves:jungle_chiseled_bookshelf", "required": false},
+    {"id": "variantchiseledbookshelves:spruce_chiseled_bookshelf", "required": false},
+    {"id": "variantchiseledbookshelves:mangrove_chiseled_bookshelf", "required": false},
+    {"id": "variantchiseledbookshelves:rubber_chiseled_bookshelf", "required": false},
+    {"id": "variantchiseledbookshelves:warped_chiseled_bookshelf", "required": false},
+    {"id": "variantchiseledbookshelves:crimson_chiseled_bookshelf", "required": false}
+  ]
+}
