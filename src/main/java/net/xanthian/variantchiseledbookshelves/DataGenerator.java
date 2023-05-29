@@ -2,7 +2,7 @@ package net.xanthian.variantchiseledbookshelves;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.xanthian.variantchiseledbookshelves.datagen.RecipeGenerator;
+import net.xanthian.variantchiseledbookshelves.datagen.*;
 
 
 public class DataGenerator implements DataGeneratorEntrypoint {
@@ -13,5 +13,7 @@ public class DataGenerator implements DataGeneratorEntrypoint {
         //pack.addProvider(LootTableGenerator::new);
         pack.addProvider(RecipeGenerator::new);
         //pack.addProvider(ModelGenerator::new);
+        pack.addProvider(BlockTagGenerator::new);
+        pack.addProvider(ItemTagGenerator::new);
     }
 }

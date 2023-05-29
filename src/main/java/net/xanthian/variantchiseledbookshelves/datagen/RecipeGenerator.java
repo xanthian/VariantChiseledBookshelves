@@ -8,7 +8,7 @@ import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.util.Identifier;
-import net.xanthian.variantchiseledbookshelves.bookshelves.ChiseledBookshelves;
+import net.xanthian.variantchiseledbookshelves.block.ChiseledBookshelves;
 
 import java.util.function.Consumer;
 
