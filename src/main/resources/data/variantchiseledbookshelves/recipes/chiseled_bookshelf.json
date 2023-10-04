@@ -1,8 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "category": "building",
   "ingredients": [
     {
-      "tag": "variantchiseledbookshelves:chiseledbookshelves"
+      "tag": "variantchiseledbookshelves:chiseled_bookshelves"
     }
   ],
   "result": {
