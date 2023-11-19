@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_chiseled_bookshelf_slot_bottom_right",
+  "textures": {
+    "texture": "variantchiseledbookshelves:block/sp_stone_pine_chiseled_bookshelf_empty"
+  }
+}

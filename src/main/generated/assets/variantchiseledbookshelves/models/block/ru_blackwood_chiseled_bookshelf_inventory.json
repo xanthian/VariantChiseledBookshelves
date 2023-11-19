@@ -1,0 +1,9 @@
+{
+  "parent": "variantchiseledbookshelves:block/variant_chiseled_bookshelf_inventory",
+  "textures": {
+    "front": "variantchiseledbookshelves:block/ru_blackwood_chiseled_bookshelf_empty",
+    "particle": "variantchiseledbookshelves:block/ru_blackwood_chiseled_bookshelf_top",
+    "side": "variantchiseledbookshelves:block/ru_blackwood_chiseled_bookshelf_side",
+    "top": "variantchiseledbookshelves:block/ru_blackwood_chiseled_bookshelf_top"
+  }
+}

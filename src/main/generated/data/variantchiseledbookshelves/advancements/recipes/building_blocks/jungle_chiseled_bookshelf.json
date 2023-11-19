@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:jungle_chiseled_bookshelf"
+        "recipe": "variantchiseledbookshelves:jungle_chiseled_bookshelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:jungle_chiseled_bookshelf"
+      "variantchiseledbookshelves:jungle_chiseled_bookshelf"
     ]
   },
   "sends_telemetry_event": false

@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "promenade"
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "promenade:dark_amaranth_planks"
+    },
+    "X": {
+      "item": "promenade:dark_amaranth_slab"
+    }
+  },
+  "pattern": [
+    "###",
+    "XXX",
+    "###"
+  ],
+  "result": {
+    "item": "variantchiseledbookshelves:prom_dark_amaranth_chiseled_bookshelf"
+  },
+  "show_notification": true
+}

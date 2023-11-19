@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "regions_unexplored"
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "regions_unexplored:light_gray_painted_planks"
+    },
+    "X": {
+      "item": "regions_unexplored:light_gray_painted_slab"
+    }
+  },
+  "pattern": [
+    "###",
+    "XXX",
+    "###"
+  ],
+  "result": {
+    "item": "variantchiseledbookshelves:ru_light_gray_painted_chiseled_bookshelf"
+  },
+  "show_notification": true
+}

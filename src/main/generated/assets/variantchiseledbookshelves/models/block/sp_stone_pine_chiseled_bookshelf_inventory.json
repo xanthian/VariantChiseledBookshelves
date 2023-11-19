@@ -1,0 +1,9 @@
+{
+  "parent": "variantchiseledbookshelves:block/variant_chiseled_bookshelf_inventory",
+  "textures": {
+    "front": "variantchiseledbookshelves:block/sp_stone_pine_chiseled_bookshelf_empty",
+    "particle": "variantchiseledbookshelves:block/sp_stone_pine_chiseled_bookshelf_top",
+    "side": "variantchiseledbookshelves:block/sp_stone_pine_chiseled_bookshelf_side",
+    "top": "variantchiseledbookshelves:block/sp_stone_pine_chiseled_bookshelf_top"
+  }
+}

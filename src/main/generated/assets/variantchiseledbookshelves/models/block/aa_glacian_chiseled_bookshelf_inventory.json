@@ -1,0 +1,9 @@
+{
+  "parent": "variantchiseledbookshelves:block/variant_chiseled_bookshelf_inventory",
+  "textures": {
+    "front": "variantchiseledbookshelves:block/aa_glacian_chiseled_bookshelf_empty",
+    "particle": "variantchiseledbookshelves:block/aa_glacian_chiseled_bookshelf_top",
+    "side": "variantchiseledbookshelves:block/aa_glacian_chiseled_bookshelf_side",
+    "top": "variantchiseledbookshelves:block/aa_glacian_chiseled_bookshelf_top"
+  }
+}

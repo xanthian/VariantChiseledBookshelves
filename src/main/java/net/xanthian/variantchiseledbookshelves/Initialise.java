@@ -1,50 +1,82 @@
 package net.xanthian.variantchiseledbookshelves;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.xanthian.variantchiseledbookshelves.block.ChiseledBookshelves;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.Version;
+import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.xanthian.variantchiseledbookshelves.block.Vanilla;
+import net.xanthian.variantchiseledbookshelves.block.compatability.*;
+import net.xanthian.variantchiseledbookshelves.util.ModCreativeTab;
 import net.xanthian.variantchiseledbookshelves.util.ModRegistries;
 
 public class Initialise implements ModInitializer {
 
     public static final String MOD_ID = "variantchiseledbookshelves";
 
-    public static final RegistryKey<ItemGroup> ITEM_GROUP = RegistryKey.of(RegistryKeys.ITEM_GROUP,
-            new Identifier(MOD_ID, "variantchiseledbookshelves"));
+    public static void ifModLoaded(String modId, Runnable runnable) {
+        if (FabricLoader.getInstance().isModLoaded(modId)) {
+            runnable.run();
+        }
+    }
+
+    public static boolean isModVersion(String modId, String ver) {
+        return FabricLoader.getInstance()
+                .getModContainer(modId)
+                .map(ModContainer::getMetadata)
+                .map(ModMetadata::getVersion)
+                .map(Version::getFriendlyString)
+                .filter(version -> version.startsWith(ver))
+                .isPresent();
+    }
 
     @Override
     public void onInitialize() {
-        // Custom Item Group
-        Registry.register(Registries.ITEM_GROUP, ITEM_GROUP, FabricItemGroup.builder()
-                .displayName(Text.translatable("variantchiseledbookshleves.group.variantchiseledbookshelves"))
-                .icon(() -> new ItemStack(ChiseledBookshelves.MANGROVE_CHISELED_BOOKSHELF))
-                .entries((context, entries) -> {
-                    entries.add(ChiseledBookshelves.ACACIA_CHISELED_BOOKSHELF);
-                    entries.add(ChiseledBookshelves.BAMBOO_CHISELED_BOOKSHELF);
-                    entries.add(ChiseledBookshelves.BIRCH_CHISELED_BOOKSHELF);
-                    entries.add(ChiseledBookshelves.CHERRY_CHISELED_BOOKSHELF);
-                    entries.add(ChiseledBookshelves.CRIMSON_CHISELED_BOOKSHELF);
-                    entries.add(ChiseledBookshelves.DARK_OAK_CHISELED_BOOKSHELF);
-                    entries.add(ChiseledBookshelves.JUNGLE_CHISELED_BOOKSHELF);
-                    entries.add(ChiseledBookshelves.MANGROVE_CHISELED_BOOKSHELF);
-                    entries.add(Blocks.CHISELED_BOOKSHELF); // Oak
-                    entries.add(ChiseledBookshelves.SPRUCE_CHISELED_BOOKSHELF);
-                    entries.add(ChiseledBookshelves.WARPED_CHISELED_BOOKSHELF);
-                })
-                .build());
 
-        //Bookshelf Registration
-        ChiseledBookshelves.registerVanillaChiseledBookshelves();
+        Vanilla.registerVanillaChiseledBookshelves();
+
+        ifModLoaded("ad_astra", AdAstra::registerChiseledBookshelves);
+
+        ifModLoaded("beachparty", BeachParty::registerChiseledBookshelves);
+
+        ifModLoaded("betterarcheology", BetterArcheology::registerChiseledBookshelves);
+
+        ifModLoaded("bewitchment", Bewitchment::registerChiseledBookshelves);
+
+        ifModLoaded("deeperdarker", DeeperAndDarker::registerChiseledBookshelves);
+
+        ifModLoaded("eldritch_end", EldritchEnd::registerChiseledBookshelves);
+
+        ifModLoaded("minecells", MineCells::registerChiseledBookshelves);
+
+        ifModLoaded("natures_spirit", NaturesSpirit::registerChiseledBookshelves);
+
+        ifModLoaded("promenade", Promenade::registerChiseledBookshelves);
+
+        ifModLoaded("regions_unexplored", () -> {
+            RegionsUnexplored.registerChiseledBookshelves();
+            if (isModVersion("regions_unexplored", "0.4")) {
+                RegionsUnexplored.register04ChiseledBookshelves();
+            } else {
+                RegionsUnexplored.register05ChiseledBookshelves();
+            }
+        });
+
+        ifModLoaded("snifferplus", SnifferPlus::registerChiseledBookshelves);
+
+        ifModLoaded("techreborn", TechReborn::registerChiseledBookshelves);
+
+        ifModLoaded("vinery", Vinery::registerChiseledBookshelves);
 
         ModRegistries.registerFuelandFlammable();
+        ModCreativeTab.registerItemGroup();
+
+        // Datagen Block - disable for client run
+        //SnifferPlus.registerChiseledBookshelves();
+        //RegionsUnexplored.register04ChiseledBookshelves();
+        //NaturesSpirit.registerChiseledBookshelves();
+        //DeeperAndDarker.registerChiseledBookshelves();
+        //AdAstra.registerChiseledBookshelves();
+
     }
 }

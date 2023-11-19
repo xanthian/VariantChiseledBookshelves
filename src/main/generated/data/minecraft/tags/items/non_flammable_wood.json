@@ -2,6 +2,26 @@
   "replace": false,
   "values": [
     "variantchiseledbookshelves:crimson_chiseled_bookshelf",
-    "variantchiseledbookshelves:warped_chiseled_bookshelf"
+    "variantchiseledbookshelves:warped_chiseled_bookshelf",
+    {
+      "id": "variantchiseledbookshelves:prom_dark_amaranth_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ru_brimwood_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ru_cobalt_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ru_dead_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ru_yellow_bioshroom_chiseled_bookshelf",
+      "required": false
+    }
   ]
 }

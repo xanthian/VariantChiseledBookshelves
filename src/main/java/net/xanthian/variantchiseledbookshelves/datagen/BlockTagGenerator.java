@@ -5,39 +5,55 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.xanthian.variantchiseledbookshelves.block.ChiseledBookshelves;
+import net.xanthian.variantchiseledbookshelves.block.Vanilla;
+import net.xanthian.variantchiseledbookshelves.block.compatability.*;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import static net.xanthian.variantchiseledbookshelves.Initialise.MOD_ID;
 
 public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
+
+    private static final TagKey<Block> CHISELED_BOOKSHELVES = TagKey.of(Registries.BLOCK.getKey(), new Identifier(MOD_ID, "chiseled_bookshelves"));
+
     public BlockTagGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
     }
 
-    private static final TagKey<Block> CHISELEDBOOKSHELVES = TagKey.of(Registries.BLOCK.getKey(), new Identifier(MOD_ID,"chiseledbookshelves"));
-    private static final TagKey<Block> MINEABLE_AXE = TagKey.of(Registries.BLOCK.getKey(), new Identifier("minecraft:mineable/axe"));
-
     @Override
-    protected void configure (RegistryWrapper.WrapperLookup arg){
+    protected void configure(RegistryWrapper.WrapperLookup arg) {
 
-        getOrCreateTagBuilder(CHISELEDBOOKSHELVES)
-                .add(ChiseledBookshelves.ACACIA_CHISELED_BOOKSHELF)
-                .add(ChiseledBookshelves.BAMBOO_CHISELED_BOOKSHELF)
-                .add(ChiseledBookshelves.BIRCH_CHISELED_BOOKSHELF)
-                .add(ChiseledBookshelves.CHERRY_CHISELED_BOOKSHELF)
-                .add(ChiseledBookshelves.CRIMSON_CHISELED_BOOKSHELF)
-                .add(ChiseledBookshelves.DARK_OAK_CHISELED_BOOKSHELF)
-                .add(ChiseledBookshelves.JUNGLE_CHISELED_BOOKSHELF)
-                .add(ChiseledBookshelves.MANGROVE_CHISELED_BOOKSHELF)
-                .add(ChiseledBookshelves.SPRUCE_CHISELED_BOOKSHELF)
-                .add(ChiseledBookshelves.WARPED_CHISELED_BOOKSHELF);
+        registerTags(Vanilla.VANILLA_CHISELED_BOOKSHELVES);
+        registerTags(AdAstra.AA_CHISELED_BOOKSHELVES);
+        registerTags(BeachParty.LDBP_CHISELED_BOOKSHELVES);
+        registerTags(BetterArcheology.BA_CHISELED_BOOKSHELVES);
+        registerTags(Bewitchment.BW_CHISELED_BOOKSHELVES);
+        registerTags(DeeperAndDarker.DAD_CHISELED_BOOKSHELVES);
+        registerTags(EldritchEnd.EE_CHISELED_BOOKSHELVES);
+        registerTags(MineCells.MC_CHISELED_BOOKSHELVES);
+        registerTags(NaturesSpirit.NS_CHISELED_BOOKSHELVES);
+        registerTags(Promenade.PROM_CHISELED_BOOKSHELVES);
+        registerTags(RegionsUnexplored.RU_CHISELED_BOOKSHELVES);
+        registerTags(SnifferPlus.SP_CHISELED_BOOKSHELVES);
+        registerTags(TechReborn.TR_CHISELED_BOOKSHELVES);
+        registerTags(Vinery.LDV_CHISELED_BOOKSHELVES);
 
-        getOrCreateTagBuilder(MINEABLE_AXE)
-                .addTag(CHISELEDBOOKSHELVES);
+        getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
+                .addTag(CHISELED_BOOKSHELVES);
+    }
 
+    private void registerTags(Map<Identifier, Block> blockMap) {
+        for (Block block : blockMap.values()) {
+            Identifier lootTableId = block.getLootTableId();
+            String newPath = lootTableId.getPath().replaceFirst("blocks/", "");
+            Identifier modifiedId = new Identifier(lootTableId.getNamespace(), newPath);
+
+            getOrCreateTagBuilder(CHISELED_BOOKSHELVES)
+                    .addOptional(modifiedId);
+        }
     }
 }

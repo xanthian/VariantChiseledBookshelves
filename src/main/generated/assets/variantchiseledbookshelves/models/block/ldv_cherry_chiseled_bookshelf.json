@@ -1,0 +1,8 @@
+{
+  "parent": "variantchiseledbookshelves:block/variant_chiseled_bookshelf",
+  "textures": {
+    "particle": "variantchiseledbookshelves:block/ldv_cherry_chiseled_bookshelf_top",
+    "side": "variantchiseledbookshelves:block/ldv_cherry_chiseled_bookshelf_side",
+    "top": "variantchiseledbookshelves:block/ldv_cherry_chiseled_bookshelf_top"
+  }
+}

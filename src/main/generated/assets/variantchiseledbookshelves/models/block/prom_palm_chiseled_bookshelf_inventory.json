@@ -1,0 +1,9 @@
+{
+  "parent": "variantchiseledbookshelves:block/variant_chiseled_bookshelf_inventory",
+  "textures": {
+    "front": "variantchiseledbookshelves:block/prom_palm_chiseled_bookshelf_empty",
+    "particle": "variantchiseledbookshelves:block/prom_palm_chiseled_bookshelf_top",
+    "side": "variantchiseledbookshelves:block/prom_palm_chiseled_bookshelf_side",
+    "top": "variantchiseledbookshelves:block/prom_palm_chiseled_bookshelf_top"
+  }
+}
