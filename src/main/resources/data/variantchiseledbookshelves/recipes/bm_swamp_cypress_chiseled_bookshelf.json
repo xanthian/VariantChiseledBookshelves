@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "biomemakeover"
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "biomemakeover:swamp_cypress_planks"
+    },
+    "X": {
+      "item": "biomemakeover:swamp_cypress_slab"
+    }
+  },
+  "pattern": [
+    "###",
+    "XXX",
+    "###"
+  ],
+  "result": {
+    "item": "variantchiseledbookshelves:bm_swamp_cypress_chiseled_bookshelf"
+  },
+  "show_notification": true
+}

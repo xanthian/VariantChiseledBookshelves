@@ -43,6 +43,11 @@ public class ModRegistries {
                 registry.add(block, 300);
             }
         }
+        if (FabricLoader.getInstance().isModLoaded("biomemakeover")) {
+            for (Block block : BiomeMakeover.BM_CHISELED_BOOKSHELVES.values()) {
+                registry.add(block, 300);
+            }
+        }
         if (FabricLoader.getInstance().isModLoaded("deeperdarker")) {
             registry.add(DeeperAndDarker.DAD_ECHO_CHISELED_BOOKSHELF, 300);
         }

@@ -42,6 +42,7 @@ public class ModelGenerator extends FabricModelProvider {
                 BlockStateVariant.create().put(VariantSettings.MODEL, identifier).put(VariantSettings.Y, rotation)
         );
     }
+
     private static String getSlotFromProperty(BooleanProperty property) {
         return property.getName();
     }
@@ -111,6 +112,7 @@ public class ModelGenerator extends FabricModelProvider {
                 BeachParty.LDBP_CHISELED_BOOKSHELVES,
                 BetterArcheology.BA_CHISELED_BOOKSHELVES,
                 Bewitchment.BW_CHISELED_BOOKSHELVES,
+                BiomeMakeover.BM_CHISELED_BOOKSHELVES,
                 DeeperAndDarker.DAD_CHISELED_BOOKSHELVES,
                 EldritchEnd.EE_CHISELED_BOOKSHELVES,
                 MineCells.MC_CHISELED_BOOKSHELVES,

@@ -28,6 +28,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
         registerTags(BeachParty.LDBP_CHISELED_BOOKSHELVES);
         registerTags(BetterArcheology.BA_CHISELED_BOOKSHELVES);
         registerTags(Bewitchment.BW_CHISELED_BOOKSHELVES);
+        registerTags(BiomeMakeover.BM_CHISELED_BOOKSHELVES);
         registerTags(DeeperAndDarker.DAD_CHISELED_BOOKSHELVES);
         registerTags(EldritchEnd.EE_CHISELED_BOOKSHELVES);
         registerTags(MineCells.MC_CHISELED_BOOKSHELVES);

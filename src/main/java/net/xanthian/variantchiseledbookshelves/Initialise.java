@@ -43,6 +43,8 @@ public class Initialise implements ModInitializer {
 
         ifModLoaded("bewitchment", Bewitchment::registerChiseledBookshelves);
 
+        ifModLoaded("biomemakeover", BiomeMakeover::registerChiseledBookshelves);
+
         ifModLoaded("deeperdarker", DeeperAndDarker::registerChiseledBookshelves);
 
         ifModLoaded("eldritch_end", EldritchEnd::registerChiseledBookshelves);
@@ -76,6 +78,7 @@ public class Initialise implements ModInitializer {
         //RegionsUnexplored.register04ChiseledBookshelves();
         //NaturesSpirit.registerChiseledBookshelves();
         //DeeperAndDarker.registerChiseledBookshelves();
+        //BiomeMakeover.registerChiseledBookshelves();
         //AdAstra.registerChiseledBookshelves();
 
     }

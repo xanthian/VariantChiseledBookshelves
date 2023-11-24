@@ -100,7 +100,7 @@ dependencies {
     //modRuntimeOnly("curse.maven:deeperdarker-659011:4715721") {transitive false}
 
     // Eldritch End
-    modRuntimeOnly("curse.maven:eldritch_end-877553:4877658") { transitive false }
+    modRuntimeOnly("curse.maven:eldritch_end-877553:4846136") { transitive false }
     modApi("curse.maven:azure_lib-817423:4829197")
     modApi("curse.maven:necronomicon-586157:4834773")
 

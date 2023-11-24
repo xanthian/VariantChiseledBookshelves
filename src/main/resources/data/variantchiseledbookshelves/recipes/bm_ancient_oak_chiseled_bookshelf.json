@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "biomemakeover"
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "biomemakeover:ancient_oak_planks"
+    },
+    "X": {
+      "item": "biomemakeover:ancient_oak_slab"
+    }
+  },
+  "pattern": [
+    "###",
+    "XXX",
+    "###"
+  ],
+  "result": {
+    "item": "variantchiseledbookshelves:bm_ancient_oak_chiseled_bookshelf"
+  },
+  "show_notification": true
+}

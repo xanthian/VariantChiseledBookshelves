@@ -78,6 +78,22 @@
       "required": false
     },
     {
+      "id": "variantchiseledbookshelves:bm_blighted_balsa_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:bm_ancient_oak_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:bm_willow_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:bm_swamp_cypress_chiseled_bookshelf",
+      "required": false
+    },
+    {
       "id": "variantchiseledbookshelves:dad_echo_chiseled_bookshelf",
       "required": false
     },

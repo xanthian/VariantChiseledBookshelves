@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_chiseled_bookshelf_slot_top_mid",
+  "textures": {
+    "texture": "variantchiseledbookshelves:block/bm_swamp_cypress_chiseled_bookshelf_empty"
+  }
+}

@@ -65,6 +65,12 @@ public class RecipeGenerator extends FabricRecipeProvider {
         offerChiseledBookshelfRecipe(withConditions(exporter, DefaultResourceConditions.allModsLoaded("bewitchment")), Bewitchment.BW_ELDER_CHISELED_BOOKSHELF, Registries.ITEM.get(new Identifier("bewitchment:elder_planks")), Registries.ITEM.get(new Identifier("bewitchment:elder_slab")));
         offerChiseledBookshelfRecipe(withConditions(exporter, DefaultResourceConditions.allModsLoaded("bewitchment")), Bewitchment.BW_JUNIPER_CHISELED_BOOKSHELF, Registries.ITEM.get(new Identifier("bewitchment:juniper_planks")), Registries.ITEM.get(new Identifier("bewitchment:juniper_slab")));
 
+        // Biome Makeover
+        //offerChiseledBookshelfRecipe(withConditions(exporter,DefaultResourceConditions.allModsLoaded("biomemakeover")),BiomeMakeover.BM_ANCIENT_OAK_CHISELED_BOOKSHELF, Registries.ITEM.get(new Identifier("biomemakeover:ancient_oak_planks")), Registries.ITEM.get(new Identifier("biomemakeover:ancient_oak_slab")));
+        //offerChiseledBookshelfRecipe(withConditions(exporter,DefaultResourceConditions.allModsLoaded("biomemakeover")),BiomeMakeover.BM_BLIGHTED_BALSA_CHISELED_BOOKSHELF, Registries.ITEM.get(new Identifier("biomemakeover:blighted_balsa_planks")), Registries.ITEM.get(new Identifier("biomemakeover:blighted_balsa_slab")));
+        //offerChiseledBookshelfRecipe(withConditions(exporter,DefaultResourceConditions.allModsLoaded("biomemakeover")),BiomeMakeover.BM_SWAMP_CYPRESS_CHISELED_BOOKSHELF, Registries.ITEM.get(new Identifier("biomemakeover:swamp_cypress_planks")), Registries.ITEM.get(new Identifier("biomemakeover:swamp_cypress_slab")));
+        //offerChiseledBookshelfRecipe(withConditions(exporter,DefaultResourceConditions.allModsLoaded("biomemakeover")),BiomeMakeover.BM_WILLOW_CHISELED_BOOKSHELF, Registries.ITEM.get(new Identifier("biomemakeover:willow_planks")), Registries.ITEM.get(new Identifier("biomemakeover:willow_slab")));
+
         // Deeper & Darker (disabled)
         //offerChiseledBookshelfRecipe(withConditions(exporter, DefaultResourceConditions.allModsLoaded("deeperdarker")), DeeperAndDarker.DAD_ECHO_CHISELED_BOOKSHELF, Registries.ITEM.get(new Identifier("deeperanddarker:echo_planks")), Registries.ITEM.get(new Identifier("deeperanddarker:echo_slab")));
 

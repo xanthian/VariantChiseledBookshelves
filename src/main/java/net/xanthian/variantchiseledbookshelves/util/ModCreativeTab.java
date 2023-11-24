@@ -56,6 +56,11 @@ public class ModCreativeTab {
                                 entries.add(block);
                             }
                         }
+                        if (FabricLoader.getInstance().isModLoaded("biomemakeover")) {
+                            for (Block block : BiomeMakeover.BM_CHISELED_BOOKSHELVES.values()) {
+                                entries.add(block);
+                            }
+                        }
                         if (FabricLoader.getInstance().isModLoaded("deeperdarker")) {
                             entries.add(DeeperAndDarker.DAD_ECHO_CHISELED_BOOKSHELF);
                         }

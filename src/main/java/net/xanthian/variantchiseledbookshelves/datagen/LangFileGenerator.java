@@ -35,6 +35,7 @@ public class LangFileGenerator extends FabricLanguageProvider {
         registerTranslations(translationBuilder, BeachParty.LDBP_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, BetterArcheology.BA_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, Bewitchment.BW_CHISELED_BOOKSHELVES);
+        registerTranslations(translationBuilder, BiomeMakeover.BM_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, DeeperAndDarker.DAD_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, EldritchEnd.EE_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, MineCells.MC_CHISELED_BOOKSHELVES);
