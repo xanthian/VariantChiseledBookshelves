@@ -33,7 +33,11 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         registerTags(BetterArcheology.BA_CHISELED_BOOKSHELVES);
         registerTags(Bewitchment.BW_CHISELED_BOOKSHELVES);
         registerTags(BiomeMakeover.BM_CHISELED_BOOKSHELVES);
+        registerTags(Blockus.BLS_CHISELED_BOOKSHELVES);
+        registerTags(Botania.BOT_CHISELED_BOOKSHELVES);
+        registerTags(Cinderscapes.CS_CHISELED_BOOKSHELVES);
         registerTags(DeeperAndDarker.DAD_CHISELED_BOOKSHELVES);
+        registerTags(Desolation.DS_CHISELED_BOOKSHELVES);
         registerTags(EldritchEnd.EE_CHISELED_BOOKSHELVES);
         registerTags(MineCells.MC_CHISELED_BOOKSHELVES);
         registerTags(NaturesSpirit.NS_CHISELED_BOOKSHELVES);

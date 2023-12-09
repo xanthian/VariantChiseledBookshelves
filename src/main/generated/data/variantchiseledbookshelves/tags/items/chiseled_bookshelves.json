@@ -94,7 +94,43 @@
       "required": false
     },
     {
+      "id": "variantchiseledbookshelves:bls_charred_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:bls_raw_bamboo_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:bls_white_oak_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:bot_livingwood_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:bot_dreamwood_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:bot_shimmerwood_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:cs_umbral_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:cs_scorched_chiseled_bookshelf",
+      "required": false
+    },
+    {
       "id": "variantchiseledbookshelves:dad_echo_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ds_charred_chiseled_bookshelf",
       "required": false
     },
     {
@@ -118,15 +154,15 @@
       "required": false
     },
     {
-      "id": "variantchiseledbookshelves:ns_joshua_chiseled_bookshelf",
-      "required": false
-    },
-    {
-      "id": "variantchiseledbookshelves:ns_wisteria_chiseled_bookshelf",
-      "required": false
-    },
-    {
       "id": "variantchiseledbookshelves:ns_sugi_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ns_coconut_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ns_palo_verde_chiseled_bookshelf",
       "required": false
     },
     {
@@ -135,6 +171,26 @@
     },
     {
       "id": "variantchiseledbookshelves:ns_maple_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ns_ghaf_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ns_larch_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ns_joshua_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ns_wisteria_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ns_cedar_chiseled_bookshelf",
       "required": false
     },
     {
@@ -170,6 +226,10 @@
       "required": false
     },
     {
+      "id": "variantchiseledbookshelves:ru_pink_bioshroom_chiseled_bookshelf",
+      "required": false
+    },
+    {
       "id": "variantchiseledbookshelves:ru_cobalt_chiseled_bookshelf",
       "required": false
     },
@@ -187,10 +247,6 @@
     },
     {
       "id": "variantchiseledbookshelves:ru_pine_chiseled_bookshelf",
-      "required": false
-    },
-    {
-      "id": "variantchiseledbookshelves:ru_alpha_oak_chiseled_bookshelf",
       "required": false
     },
     {
@@ -238,6 +294,10 @@
       "required": false
     },
     {
+      "id": "variantchiseledbookshelves:ru_alpha_chiseled_bookshelf",
+      "required": false
+    },
+    {
       "id": "variantchiseledbookshelves:ru_red_painted_chiseled_bookshelf",
       "required": false
     },
@@ -266,11 +326,11 @@
       "required": false
     },
     {
-      "id": "variantchiseledbookshelves:ru_yellow_bioshroom_chiseled_bookshelf",
+      "id": "variantchiseledbookshelves:ru_cherry_chiseled_bookshelf",
       "required": false
     },
     {
-      "id": "variantchiseledbookshelves:ru_cherry_chiseled_bookshelf",
+      "id": "variantchiseledbookshelves:ru_yellow_bioshroom_chiseled_bookshelf",
       "required": false
     },
     {
@@ -290,6 +350,10 @@
       "required": false
     },
     {
+      "id": "variantchiseledbookshelves:ru_green_bioshroom_chiseled_bookshelf",
+      "required": false
+    },
+    {
       "id": "variantchiseledbookshelves:ru_blue_painted_chiseled_bookshelf",
       "required": false
     },
@@ -299,6 +363,10 @@
     },
     {
       "id": "variantchiseledbookshelves:ru_palm_chiseled_bookshelf",
+      "required": false
+    },
+    {
+      "id": "variantchiseledbookshelves:ru_blue_bioshroom_chiseled_bookshelf",
       "required": false
     },
     {

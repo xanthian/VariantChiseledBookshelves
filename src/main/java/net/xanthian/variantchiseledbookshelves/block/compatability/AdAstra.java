@@ -10,7 +10,6 @@ import net.minecraft.util.Identifier;
 import net.xanthian.variantchiseledbookshelves.Initialise;
 import net.xanthian.variantchiseledbookshelves.block.VariantChiseledBookshelfBlock;
 
-
 import java.util.Map;
 
 public class AdAstra {
@@ -22,9 +21,9 @@ public class AdAstra {
     public static Block AA_STROPHAR_CHISELED_BOOKSHELF;
 
     public static void registerChiseledBookshelves() {
-        AA_AERONOS_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("aa_aeronos_chiseled_bookshelf");
-        AA_GLACIAN_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("aa_glacian_chiseled_bookshelf");
-        AA_STROPHAR_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("aa_strophar_chiseled_bookshelf");
+        AA_AERONOS_CHISELED_BOOKSHELF = registerChiseledBookshelf("aa_aeronos_chiseled_bookshelf");
+        AA_GLACIAN_CHISELED_BOOKSHELF = registerChiseledBookshelf("aa_glacian_chiseled_bookshelf");
+        AA_STROPHAR_CHISELED_BOOKSHELF = registerChiseledBookshelf("aa_strophar_chiseled_bookshelf");
     }
 
     public static Block register(String name, Block block) {
@@ -35,7 +34,7 @@ public class AdAstra {
         return block;
     }
 
-    public static Block registerChiseled_Bookshelf(String name) {
+    public static Block registerChiseledBookshelf(String name) {
         return register(name, new VariantChiseledBookshelfBlock());
     }
 }

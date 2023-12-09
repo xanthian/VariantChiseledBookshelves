@@ -4,6 +4,10 @@
     "variantchiseledbookshelves:crimson_chiseled_bookshelf",
     "variantchiseledbookshelves:warped_chiseled_bookshelf",
     {
+      "id": "variantchiseledbookshelves:bls_charred_chiseled_bookshelf",
+      "required": false
+    },
+    {
       "id": "variantchiseledbookshelves:prom_dark_amaranth_chiseled_bookshelf",
       "required": false
     },

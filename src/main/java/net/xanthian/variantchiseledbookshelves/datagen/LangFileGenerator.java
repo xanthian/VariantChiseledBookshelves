@@ -16,6 +16,27 @@ public class LangFileGenerator extends FabricLanguageProvider {
         super(dataOutput);
     }
 
+    public static String generateBlockDisplayName(Block block) {
+        Identifier name = Registries.BLOCK.getId(block);
+        String blockName = name.getPath();
+        int underscoreIndex = blockName.indexOf('_');
+        if (underscoreIndex != -1 && underscoreIndex < blockName.length() - 1) {
+            blockName = blockName.substring(underscoreIndex + 1);
+        }
+        String[] parts = blockName.split("_");
+        StringBuilder displayName = new StringBuilder();
+        for (String part : parts) {
+            displayName.append(Character.toUpperCase(part.charAt(0))).append(part.substring(1)).append(" ");
+        }
+        return displayName.toString().trim();
+    }
+
+    private static void registerTranslations(FabricLanguageProvider.TranslationBuilder translationBuilder, Map<Identifier, Block> blockMap) {
+        for (Block block : blockMap.values()) {
+            translationBuilder.add(block, generateBlockDisplayName(block));
+        }
+    }
+
     @Override
     public void generateTranslations(TranslationBuilder translationBuilder) {
 
@@ -36,7 +57,11 @@ public class LangFileGenerator extends FabricLanguageProvider {
         registerTranslations(translationBuilder, BetterArcheology.BA_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, Bewitchment.BW_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, BiomeMakeover.BM_CHISELED_BOOKSHELVES);
+        registerTranslations(translationBuilder, Blockus.BLS_CHISELED_BOOKSHELVES);
+        registerTranslations(translationBuilder, Botania.BOT_CHISELED_BOOKSHELVES);
+        registerTranslations(translationBuilder, Cinderscapes.CS_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, DeeperAndDarker.DAD_CHISELED_BOOKSHELVES);
+        registerTranslations(translationBuilder, Desolation.DS_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, EldritchEnd.EE_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, MineCells.MC_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, NaturesSpirit.NS_CHISELED_BOOKSHELVES);
@@ -46,25 +71,5 @@ public class LangFileGenerator extends FabricLanguageProvider {
         registerTranslations(translationBuilder, TechReborn.TR_CHISELED_BOOKSHELVES);
         registerTranslations(translationBuilder, Vinery.LDV_CHISELED_BOOKSHELVES);
 
-    }
-    public static String generateBlockDisplayName(Block block) {
-        Identifier name = Registries.BLOCK.getId(block);
-        String blockName = name.getPath();
-        int underscoreIndex = blockName.indexOf('_');
-        if (underscoreIndex != -1 && underscoreIndex < blockName.length() - 1) {
-            blockName = blockName.substring(underscoreIndex + 1);
-        }
-        String[] parts = blockName.split("_");
-        StringBuilder displayName = new StringBuilder();
-        for (String part : parts) {
-            displayName.append(Character.toUpperCase(part.charAt(0))).append(part.substring(1)).append(" ");
-        }
-        return displayName.toString().trim();
-    }
-
-    private static void registerTranslations(FabricLanguageProvider.TranslationBuilder translationBuilder, Map<Identifier, Block> blockMap) {
-        for (Block block : blockMap.values()) {
-            translationBuilder.add(block, generateBlockDisplayName(block));
-        }
     }
 }

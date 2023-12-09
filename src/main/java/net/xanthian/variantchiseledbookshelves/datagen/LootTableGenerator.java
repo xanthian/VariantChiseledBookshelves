@@ -27,7 +27,11 @@ public class LootTableGenerator extends FabricBlockLootTableProvider {
         registerLootTables(BetterArcheology.BA_CHISELED_BOOKSHELVES, "betterarcheology");
         registerLootTables(Bewitchment.BW_CHISELED_BOOKSHELVES, "bewitchment");
         registerLootTables(BiomeMakeover.BM_CHISELED_BOOKSHELVES, "biomemakeover");
+        registerLootTables(Blockus.BLS_CHISELED_BOOKSHELVES, "blockus");
+        registerLootTables(Botania.BOT_CHISELED_BOOKSHELVES, "botania");
+        registerLootTables(Cinderscapes.CS_CHISELED_BOOKSHELVES, "cinderscapes");
         registerLootTables(DeeperAndDarker.DAD_CHISELED_BOOKSHELVES, "deeperdarker");
+        registerLootTables(Desolation.DS_CHISELED_BOOKSHELVES, "desolation");
         registerLootTables(EldritchEnd.EE_CHISELED_BOOKSHELVES, "eldritch_end");
         registerLootTables(MineCells.MC_CHISELED_BOOKSHELVES, "minecells");
         registerLootTables(NaturesSpirit.NS_CHISELED_BOOKSHELVES, "natures_spirit");

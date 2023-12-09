@@ -1,0 +1,8 @@
+{
+  "parent": "variantchiseledbookshelves:block/variant_chiseled_bookshelf",
+  "textures": {
+    "particle": "variantchiseledbookshelves:block/ru_green_bioshroom_chiseled_bookshelf_top",
+    "side": "variantchiseledbookshelves:block/ru_green_bioshroom_chiseled_bookshelf_side",
+    "top": "variantchiseledbookshelves:block/ru_green_bioshroom_chiseled_bookshelf_top"
+  }
+}

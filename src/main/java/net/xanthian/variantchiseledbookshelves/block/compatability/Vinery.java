@@ -19,7 +19,7 @@ public class Vinery {
     public static Block LDV_CHERRY_CHISELED_BOOKSHELF;
 
     public static void registerChiseledBookshelves() {
-        LDV_CHERRY_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("ldv_cherry_chiseled_bookshelf");
+        LDV_CHERRY_CHISELED_BOOKSHELF = registerChiseledBookshelf("ldv_cherry_chiseled_bookshelf");
     }
 
     public static Block register(String name, Block block) {
@@ -30,7 +30,7 @@ public class Vinery {
         return block;
     }
 
-    public static Block registerChiseled_Bookshelf(String name) {
+    public static Block registerChiseledBookshelf(String name) {
         return register(name, new VariantChiseledBookshelfBlock());
     }
 }

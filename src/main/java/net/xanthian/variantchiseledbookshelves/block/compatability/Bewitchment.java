@@ -10,7 +10,6 @@ import net.minecraft.util.Identifier;
 import net.xanthian.variantchiseledbookshelves.Initialise;
 import net.xanthian.variantchiseledbookshelves.block.VariantChiseledBookshelfBlock;
 
-
 import java.util.Map;
 
 public class Bewitchment {
@@ -23,10 +22,10 @@ public class Bewitchment {
     public static Block BW_JUNIPER_CHISELED_BOOKSHELF;
 
     public static void registerChiseledBookshelves() {
-        BW_CYPRESS_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("bw_cypress_chiseled_bookshelf");
-        BW_DRAGONS_BLOOD_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("bw_dragons_blood_chiseled_bookshelf");
-        BW_ELDER_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("bw_elder_chiseled_bookshelf");
-        BW_JUNIPER_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("bw_juniper_chiseled_bookshelf");
+        BW_CYPRESS_CHISELED_BOOKSHELF = registerChiseledBookshelf("bw_cypress_chiseled_bookshelf");
+        BW_DRAGONS_BLOOD_CHISELED_BOOKSHELF = registerChiseledBookshelf("bw_dragons_blood_chiseled_bookshelf");
+        BW_ELDER_CHISELED_BOOKSHELF = registerChiseledBookshelf("bw_elder_chiseled_bookshelf");
+        BW_JUNIPER_CHISELED_BOOKSHELF = registerChiseledBookshelf("bw_juniper_chiseled_bookshelf");
     }
 
     public static Block register(String name, Block block) {
@@ -37,7 +36,7 @@ public class Bewitchment {
         return block;
     }
 
-    public static Block registerChiseled_Bookshelf(String name) {
+    public static Block registerChiseledBookshelf(String name) {
         return register(name, new VariantChiseledBookshelfBlock());
     }
 }

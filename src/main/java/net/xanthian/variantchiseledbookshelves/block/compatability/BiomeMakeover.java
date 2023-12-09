@@ -22,10 +22,10 @@ public class BiomeMakeover {
     public static Block BM_WILLOW_CHISELED_BOOKSHELF;
 
     public static void registerChiseledBookshelves() {
-        BM_ANCIENT_OAK_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("bm_ancient_oak_chiseled_bookshelf");
-        BM_BLIGHTED_BALSA_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("bm_blighted_balsa_chiseled_bookshelf");
-        BM_SWAMP_CYPRESS_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("bm_swamp_cypress_chiseled_bookshelf");
-        BM_WILLOW_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("bm_willow_chiseled_bookshelf");
+        BM_ANCIENT_OAK_CHISELED_BOOKSHELF = registerChiseledBookshelf("bm_ancient_oak_chiseled_bookshelf");
+        BM_BLIGHTED_BALSA_CHISELED_BOOKSHELF = registerChiseledBookshelf("bm_blighted_balsa_chiseled_bookshelf");
+        BM_SWAMP_CYPRESS_CHISELED_BOOKSHELF = registerChiseledBookshelf("bm_swamp_cypress_chiseled_bookshelf");
+        BM_WILLOW_CHISELED_BOOKSHELF = registerChiseledBookshelf("bm_willow_chiseled_bookshelf");
     }
 
     public static Block register(String name, Block block) {
@@ -36,7 +36,7 @@ public class BiomeMakeover {
         return block;
     }
 
-    public static Block registerChiseled_Bookshelf(String name) {
+    public static Block registerChiseledBookshelf(String name) {
         return register(name, new VariantChiseledBookshelfBlock());
     }
 }

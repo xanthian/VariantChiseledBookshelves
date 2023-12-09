@@ -14,8 +14,6 @@ import net.xanthian.variantchiseledbookshelves.Initialise;
 import net.xanthian.variantchiseledbookshelves.block.Vanilla;
 import net.xanthian.variantchiseledbookshelves.block.compatability.*;
 
-import static net.xanthian.variantchiseledbookshelves.Initialise.isModVersion;
-
 
 public class ModCreativeTab {
 
@@ -61,8 +59,26 @@ public class ModCreativeTab {
                                 entries.add(block);
                             }
                         }
+                        if (FabricLoader.getInstance().isModLoaded("blockus")) {
+                            for (Block block : Blockus.BLS_CHISELED_BOOKSHELVES.values()) {
+                                entries.add(block);
+                            }
+                        }
+                        if (FabricLoader.getInstance().isModLoaded("botania")) {
+                            for (Block block : Botania.BOT_CHISELED_BOOKSHELVES.values()) {
+                                entries.add(block);
+                            }
+                        }
+                        if (FabricLoader.getInstance().isModLoaded("cinderscapes")) {
+                            for (Block block : Cinderscapes.CS_CHISELED_BOOKSHELVES.values()) {
+                                entries.add(block);
+                            }
+                        }
                         if (FabricLoader.getInstance().isModLoaded("deeperdarker")) {
                             entries.add(DeeperAndDarker.DAD_ECHO_CHISELED_BOOKSHELF);
+                        }
+                        if (FabricLoader.getInstance().isModLoaded("desolation")) {
+                            entries.add(Desolation.DS_CHARRED_CHISELED_BOOKSHELF);
                         }
                         if (FabricLoader.getInstance().isModLoaded("eldritch_end")) {
                             entries.add(EldritchEnd.EE_PRIMORDIAL_CHISELED_BOOKSHELF);
@@ -81,46 +97,8 @@ public class ModCreativeTab {
                             }
                         }
                         if (FabricLoader.getInstance().isModLoaded("regions_unexplored")) {
-                            entries.add(RegionsUnexplored.RU_ALPHA_OAK_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_BAOBAB_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_BLACK_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_BLACKWOOD_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_BLUE_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_BROWN_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_CYAN_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_CYPRESS_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_DEAD_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_EUCALYPTUS_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_GRAY_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_GREEN_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_JOSHUA_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_LARCH_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_LIGHT_BLUE_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_LIGHT_GRAY_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_LIME_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_MAGENTA_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_MAPLE_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_MAUVE_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_ORANGE_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_PALM_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_PINE_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_PINK_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_PURPLE_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_REDWOOD_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_RED_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_WHITE_PAINTED_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_WILLOW_CHISELED_BOOKSHELF);
-                            entries.add(RegionsUnexplored.RU_YELLOW_PAINTED_CHISELED_BOOKSHELF);
-                            if (isModVersion("regions_unexplored", "0.4")) {
-                                entries.add(RegionsUnexplored.RU_CHERRY_CHISELED_BOOKSHELF);
-                                entries.add(RegionsUnexplored.RU_SCULKWOOD_CHISELED_BOOKSHELF);
-                            } else {
-                                entries.add(RegionsUnexplored.RU_BRIMWOOD_CHISELED_BOOKSHELF);
-                                entries.add(RegionsUnexplored.RU_COBALT_CHISELED_BOOKSHELF);
-                                entries.add(RegionsUnexplored.RU_KAPOK_CHISELED_BOOKSHELF);
-                                entries.add(RegionsUnexplored.RU_MAGNOLIA_CHISELED_BOOKSHELF);
-                                entries.add(RegionsUnexplored.RU_SOCOTRA_CHISELED_BOOKSHELF);
-                                entries.add(RegionsUnexplored.RU_YELLOW_BIOSHROOM_CHISELED_BOOKSHELF);
+                            for (Block block : RegionsUnexplored.RU_CHISELED_BOOKSHELVES.values()) {
+                                entries.add(block);
                             }
                         }
                         if (FabricLoader.getInstance().isModLoaded("snifferplus")) {
@@ -134,7 +112,7 @@ public class ModCreativeTab {
                         }
 
                     })
-                    .build());
+                    .texture("variantchiseledbookshelves.png").noRenderedName().build());
 
     public static void registerItemGroup() {
     }

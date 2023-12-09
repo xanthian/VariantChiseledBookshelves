@@ -8,7 +8,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.xanthian.variantchiseledbookshelves.Initialise;
-
 import net.xanthian.variantchiseledbookshelves.block.VariantChiseledBookshelfBlock;
 
 import java.util.Map;
@@ -20,7 +19,7 @@ public class BetterArcheology {
     public static Block BA_ROTTEN_CHISELED_BOOKSHELF;
 
     public static void registerChiseledBookshelves() {
-        BA_ROTTEN_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("ba_rotten_chiseled_bookshelf");
+        BA_ROTTEN_CHISELED_BOOKSHELF = registerChiseledBookshelf("ba_rotten_chiseled_bookshelf");
     }
 
     public static Block register(String name, Block block) {
@@ -31,7 +30,7 @@ public class BetterArcheology {
         return block;
     }
 
-    public static Block registerChiseled_Bookshelf(String name) {
+    public static Block registerChiseledBookshelf(String name) {
         return register(name, new VariantChiseledBookshelfBlock());
     }
 }

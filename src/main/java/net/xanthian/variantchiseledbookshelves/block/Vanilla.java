@@ -13,8 +13,6 @@ import java.util.Map;
 
 public class Vanilla {
 
-    public static Map<Identifier, Block> VANILLA_CHISELED_BOOKSHELVES = Maps.newHashMap();
-
     public static final VariantChiseledBookshelfBlock ACACIA_CHISELED_BOOKSHELF = new VariantChiseledBookshelfBlock();
     public static final VariantChiseledBookshelfBlock BAMBOO_CHISELED_BOOKSHELF = new VariantChiseledBookshelfBlock();
     public static final VariantChiseledBookshelfBlock BIRCH_CHISELED_BOOKSHELF = new VariantChiseledBookshelfBlock();
@@ -25,6 +23,7 @@ public class Vanilla {
     public static final VariantChiseledBookshelfBlock MANGROVE_CHISELED_BOOKSHELF = new VariantChiseledBookshelfBlock();
     public static final VariantChiseledBookshelfBlock SPRUCE_CHISELED_BOOKSHELF = new VariantChiseledBookshelfBlock();
     public static final VariantChiseledBookshelfBlock WARPED_CHISELED_BOOKSHELF = new VariantChiseledBookshelfBlock();
+    public static Map<Identifier, Block> VANILLA_CHISELED_BOOKSHELVES = Maps.newHashMap();
 
     public static void registerVanillaChiseledBookshelves() {
         registerChiseledBookshelfBlock("acacia_chiseled_bookshelf", ACACIA_CHISELED_BOOKSHELF);

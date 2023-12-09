@@ -8,7 +8,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.xanthian.variantchiseledbookshelves.Initialise;
-
 import net.xanthian.variantchiseledbookshelves.block.VariantChiseledBookshelfBlock;
 
 import java.util.Map;
@@ -23,10 +22,10 @@ public class Promenade {
     public static Block PROM_SAKURA_CHISELED_BOOKSHELF;
 
     public static void registerChiseledBookshelves() {
-        PROM_DARK_AMARANTH_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("prom_dark_amaranth_chiseled_bookshelf");
-        PROM_MAPLE_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("prom_maple_chiseled_bookshelf");
-        PROM_PALM_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("prom_palm_chiseled_bookshelf");
-        PROM_SAKURA_CHISELED_BOOKSHELF = registerChiseled_Bookshelf("prom_sakura_chiseled_bookshelf");
+        PROM_DARK_AMARANTH_CHISELED_BOOKSHELF = registerChiseledBookshelf("prom_dark_amaranth_chiseled_bookshelf");
+        PROM_MAPLE_CHISELED_BOOKSHELF = registerChiseledBookshelf("prom_maple_chiseled_bookshelf");
+        PROM_PALM_CHISELED_BOOKSHELF = registerChiseledBookshelf("prom_palm_chiseled_bookshelf");
+        PROM_SAKURA_CHISELED_BOOKSHELF = registerChiseledBookshelf("prom_sakura_chiseled_bookshelf");
     }
 
     public static Block register(String name, Block block) {
@@ -37,7 +36,7 @@ public class Promenade {
         return block;
     }
 
-    public static Block registerChiseled_Bookshelf(String name) {
+    public static Block registerChiseledBookshelf(String name) {
         return register(name, new VariantChiseledBookshelfBlock());
     }
 }
