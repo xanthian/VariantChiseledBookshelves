@@ -290,10 +290,6 @@
       "required": false
     },
     {
-      "id": "variantchiseledbookshelves:ru_sculkwood_chiseled_bookshelf",
-      "required": false
-    },
-    {
       "id": "variantchiseledbookshelves:ru_alpha_chiseled_bookshelf",
       "required": false
     },
@@ -323,10 +319,6 @@
     },
     {
       "id": "variantchiseledbookshelves:ru_yellow_painted_chiseled_bookshelf",
-      "required": false
-    },
-    {
-      "id": "variantchiseledbookshelves:ru_cherry_chiseled_bookshelf",
       "required": false
     },
     {

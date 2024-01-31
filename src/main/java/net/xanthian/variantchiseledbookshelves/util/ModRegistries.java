@@ -112,10 +112,6 @@ public class ModRegistries {
             registry.add(RegionsUnexplored.RU_WHITE_PAINTED_CHISELED_BOOKSHELF, 300);
             registry.add(RegionsUnexplored.RU_WILLOW_CHISELED_BOOKSHELF, 300);
             registry.add(RegionsUnexplored.RU_YELLOW_PAINTED_CHISELED_BOOKSHELF, 300);
-
-            registry.add(RegionsUnexplored.RU_CHERRY_CHISELED_BOOKSHELF, 300);
-            registry.add(RegionsUnexplored.RU_SCULKWOOD_CHISELED_BOOKSHELF, 300);
-
             registry.add(RegionsUnexplored.RU_BLUE_BIOSHROOM_CHISELED_BOOKSHELF, 300);
             registry.add(RegionsUnexplored.RU_GREEN_BIOSHROOM_CHISELED_BOOKSHELF, 300);
             registry.add(RegionsUnexplored.RU_KAPOK_CHISELED_BOOKSHELF, 300);

@@ -46,10 +46,6 @@ public class RegionsUnexplored {
     public static Block RU_WHITE_PAINTED_CHISELED_BOOKSHELF;
     public static Block RU_WILLOW_CHISELED_BOOKSHELF;
     public static Block RU_YELLOW_PAINTED_CHISELED_BOOKSHELF;
-
-    public static Block RU_CHERRY_CHISELED_BOOKSHELF;
-    public static Block RU_SCULKWOOD_CHISELED_BOOKSHELF;
-
     public static Block RU_BLUE_BIOSHROOM_CHISELED_BOOKSHELF;
     public static Block RU_BRIMWOOD_CHISELED_BOOKSHELF;
     public static Block RU_COBALT_CHISELED_BOOKSHELF;
@@ -91,9 +87,6 @@ public class RegionsUnexplored {
         RU_WHITE_PAINTED_CHISELED_BOOKSHELF = registerChiseledBookshelf("ru_white_painted_chiseled_bookshelf");
         RU_WILLOW_CHISELED_BOOKSHELF = registerChiseledBookshelf("ru_willow_chiseled_bookshelf");
         RU_YELLOW_PAINTED_CHISELED_BOOKSHELF = registerChiseledBookshelf("ru_yellow_painted_chiseled_bookshelf");
-
-        RU_CHERRY_CHISELED_BOOKSHELF = registerChiseledBookshelf("ru_cherry_chiseled_bookshelf");
-        RU_SCULKWOOD_CHISELED_BOOKSHELF = registerChiseledBookshelf("ru_sculkwood_chiseled_bookshelf");
 
         RU_BLUE_BIOSHROOM_CHISELED_BOOKSHELF = registerChiseledBookshelf("ru_blue_bioshroom_chiseled_bookshelf");
         RU_BRIMWOOD_CHISELED_BOOKSHELF = registerChiseledBookshelf("ru_brimwood_chiseled_bookshelf");

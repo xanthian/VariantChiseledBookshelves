@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.DefaultResourceConditions;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.block.Block;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
 import net.minecraft.item.ItemConvertible;
@@ -19,15 +19,13 @@ import net.xanthian.variantchiseledbookshelves.block.compatability.*;
 import net.xanthian.variantchiseledbookshelves.util.ModItemTags;
 
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class RecipeGenerator extends FabricRecipeProvider {
     public RecipeGenerator(FabricDataOutput output) {
         super(output);
     }
 
-
-    public static void offerChiseledBookshelfRecipe(Consumer<RecipeJsonProvider> exporter, ItemConvertible bookshelf, ItemConvertible plank, ItemConvertible slab) {
+    public static void offerChiseledBookshelfRecipe(RecipeExporter exporter, ItemConvertible bookshelf, ItemConvertible plank, ItemConvertible slab) {
         ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, bookshelf)
                 .input('#', plank).input('X', slab)
                 .pattern("###").pattern("XXX").pattern("###")
@@ -36,7 +34,7 @@ public class RecipeGenerator extends FabricRecipeProvider {
     }
 
     @Override
-    public void generate(Consumer<RecipeJsonProvider> exporter) {
+    public void generate(RecipeExporter exporter) {
 
         registerChiseledBookshelfRecipe(exporter, AdAstra.AA_CHISELED_BOOKSHELVES, "ad_astra");
         registerChiseledBookshelfRecipe(exporter, BeachParty.LDBP_CHISELED_BOOKSHELVES, "beachparty");
@@ -65,11 +63,11 @@ public class RecipeGenerator extends FabricRecipeProvider {
 
     }
 
-    public void registerChiseledBookshelfRecipe(Consumer<RecipeJsonProvider> exporter, Map<Identifier, Block> bookshelf, String modId) {
+    public void registerChiseledBookshelfRecipe(RecipeExporter exporter, Map<Identifier, Block> bookshelf, String modId) {
         registerChiseledBookshelfRecipe(exporter, bookshelf, modId, "_planks", "_slab");
     }
 
-    public void registerChiseledBookshelfRecipe(Consumer<RecipeJsonProvider> exporter, Map<Identifier, Block> bookshelves, String modId, String plankSuffix, String slabSuffix) {
+    public void registerChiseledBookshelfRecipe(RecipeExporter exporter, Map<Identifier, Block> bookshelves, String modId, String plankSuffix, String slabSuffix) {
         for (Map.Entry<Identifier, Block> entry : bookshelves.entrySet()) {
             Identifier bookshelfId = entry.getKey();
             Block bookshelf = entry.getValue();
