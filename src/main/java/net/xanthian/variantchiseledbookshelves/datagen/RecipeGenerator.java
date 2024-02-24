@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.DefaultResourceConditions;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
@@ -15,6 +16,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+import net.xanthian.variantchiseledbookshelves.block.Vanilla;
 import net.xanthian.variantchiseledbookshelves.block.compatability.*;
 import net.xanthian.variantchiseledbookshelves.util.ModItemTags;
 
@@ -37,6 +39,18 @@ public class RecipeGenerator extends FabricRecipeProvider {
 
     @Override
     public void generate(Consumer<RecipeJsonProvider> exporter) {
+
+        offerChiseledBookshelfRecipe(exporter, Vanilla.ACACIA_CHISELED_BOOKSHELF, Blocks.ACACIA_PLANKS, Blocks.ACACIA_SLAB);
+        offerChiseledBookshelfRecipe(exporter, Vanilla.BAMBOO_CHISELED_BOOKSHELF, Blocks.BAMBOO_PLANKS, Blocks.BAMBOO_SLAB);
+        offerChiseledBookshelfRecipe(exporter, Vanilla.BIRCH_CHISELED_BOOKSHELF, Blocks.BIRCH_PLANKS, Blocks.BIRCH_SLAB);
+        offerChiseledBookshelfRecipe(exporter, Vanilla.CHERRY_CHISELED_BOOKSHELF, Blocks.CHERRY_PLANKS, Blocks.CHERRY_SLAB);
+        offerChiseledBookshelfRecipe(exporter, Vanilla.CRIMSON_CHISELED_BOOKSHELF, Blocks.CRIMSON_PLANKS, Blocks.CRIMSON_SLAB);
+        offerChiseledBookshelfRecipe(exporter, Vanilla.DARK_OAK_CHISELED_BOOKSHELF, Blocks.DARK_OAK_PLANKS, Blocks.DARK_OAK_SLAB);
+        offerChiseledBookshelfRecipe(exporter, Vanilla.JUNGLE_CHISELED_BOOKSHELF, Blocks.JUNGLE_PLANKS, Blocks.JUNGLE_SLAB);
+        offerChiseledBookshelfRecipe(exporter, Vanilla.MANGROVE_CHISELED_BOOKSHELF, Blocks.MANGROVE_PLANKS, Blocks.MANGROVE_SLAB);
+        offerChiseledBookshelfRecipe(exporter, Vanilla.SPRUCE_CHISELED_BOOKSHELF, Blocks.SPRUCE_PLANKS, Blocks.SPRUCE_SLAB);
+        offerChiseledBookshelfRecipe(exporter, Vanilla.WARPED_CHISELED_BOOKSHELF, Blocks.WARPED_PLANKS, Blocks.WARPED_SLAB);
+
 
         registerChiseledBookshelfRecipe(exporter, AdAstra.AA_CHISELED_BOOKSHELVES, "ad_astra");
         registerChiseledBookshelfRecipe(exporter, BeachParty.LDBP_CHISELED_BOOKSHELVES, "beachparty");
