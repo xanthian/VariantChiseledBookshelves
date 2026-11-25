@@ -115,6 +115,8 @@ public final class GeneratedShelfPack implements ResourcePack {
                     "entries", List.of(Map.of("type", "minecraft:item", "name", id.toString()))))));
         }
 
+        generatePowerOfBooksAdvancement();
+
         List<String> ids = variants.stream().map(variant -> variant.id().toString()).toList();
         putTag(TABLE_TAG, "block", ids);
         putTag(TABLE_TAG, "item", ids);
@@ -134,6 +136,45 @@ public final class GeneratedShelfPack implements ResourcePack {
                 "ingredients", List.of(Map.of("tag", TABLE_TAG.toString())), "result", Map.of("id", CHISELED_BOOKSHELF.toString())));
         putRecipeUnlock(conversion, "has_chiseled_bookshelf", Map.of("items", "#" + TABLE_TAG));
         putShapedRecipe(CHISELED_BOOKSHELF, Identifier.ofVanilla("oak_planks"), Identifier.ofVanilla("oak_slab"), CHISELED_BOOKSHELF);
+    }
+
+    /** Keep vanilla's advancement ID and criteria, accepting oak and every generated wood. */
+    private void generatePowerOfBooksAdvancement() {
+        Identifier readableShelves = Identifier.of(Initialise.MOD_ID, "readable_chiseled_bookshelves");
+        putTag(readableShelves, "block", List.of(CHISELED_BOOKSHELF.toString(), "#" + TABLE_TAG));
+        String shelfTag = "#" + readableShelves;
+        List<Object> adjacentComparators = new ArrayList<>();
+        List<Object> comparatorReadsShelf = new ArrayList<>();
+        String[] facings = {"north", "south", "west", "east"};
+        int[] dx = {0, 0, -1, 1};
+        int[] dz = {-1, 1, 0, 0};
+        for (int direction = 0; direction < facings.length; direction++) {
+            Map<String, Object> comparatorPredicate = Map.of("block", Map.of("blocks", "minecraft:comparator",
+                    "state", Map.of("facing", facings[direction])));
+            adjacentComparators.add(locationCheck(-dx[direction], -dz[direction], comparatorPredicate));
+            comparatorReadsShelf.add(Map.of("condition", "minecraft:all_of", "terms", List.of(
+                    Map.of("condition", "minecraft:block_state_property", "block", "minecraft:comparator",
+                            "properties", Map.of("facing", facings[direction])),
+                    locationCheck(dx[direction], dz[direction], Map.of("block", Map.of("blocks", shelfTag))))));
+        }
+        put(Identifier.ofVanilla("adventure/read_power_of_chiseled_bookshelf"), "advancement/", Map.of(
+                "parent", "minecraft:adventure/root",
+                "criteria", Map.of(
+                        "chiseled_bookshelf", Map.of("trigger", "minecraft:placed_block", "conditions", Map.of("location", List.of(
+                                locationCheck(0, 0, Map.of("block", Map.of("blocks", shelfTag))),
+                                Map.of("condition", "minecraft:any_of", "terms", adjacentComparators)))),
+                        "comparator", Map.of("trigger", "minecraft:placed_block", "conditions", Map.of("location", List.of(
+                                Map.of("condition", "minecraft:any_of", "terms", comparatorReadsShelf))))),
+                "display", Map.of(
+                        "description", Map.of("translate", "advancements.adventure.read_power_from_chiseled_bookshelf.description"),
+                        "icon", Map.of("count", 1, "id", CHISELED_BOOKSHELF.toString()),
+                        "title", Map.of("translate", "advancements.adventure.read_power_from_chiseled_bookshelf.title")),
+                "requirements", List.of(List.of("chiseled_bookshelf", "comparator")),
+                "sends_telemetry_event", true));
+    }
+
+    private static Map<String, Object> locationCheck(int dx, int dz, Map<String, Object> predicate) {
+        return Map.of("condition", "minecraft:location_check", "offsetX", dx, "offsetZ", dz, "predicate", predicate);
     }
 
     private void putShapedRecipe(Identifier id, Identifier ingredient, Identifier slab, Identifier result) {

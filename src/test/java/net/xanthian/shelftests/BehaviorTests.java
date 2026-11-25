@@ -128,4 +128,54 @@ public class BehaviorTests implements FabricGameTest {
         }
         context.runAtTick(blocks.size() * 24L - 1, context::complete);
     }
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void powerOfBooksAdvancementRecognizesEveryWood(TestContext context) {
+        var world = context.getWorld();
+        var player = context.createMockCreativeServerPlayerInWorld();
+        var advancement = world.getServer().getAdvancementLoader().get(net.minecraft.util.Identifier.ofVanilla("adventure/read_power_of_chiseled_bookshelf"));
+        context.assertTrue(advancement != null, "The vanilla Power of Books advancement is loaded");
+        var tracker = player.getAdvancementTracker();
+        List<Block> shelves = new ArrayList<>();
+        shelves.add(Blocks.CHISELED_BOOKSHELF);
+        DynamicShelves.variants().forEach(v -> shelves.add(v.block()));
+        var shelfPos = context.getAbsolutePos(new BlockPos(1, 2, 1));
+        for (Block shelf : shelves) {
+            for (Direction direction : Direction.Type.HORIZONTAL) {
+                var comparatorPos = shelfPos.offset(direction.getOpposite());
+                world.setBlockState(comparatorPos.down(), Blocks.STONE.getDefaultState());
+                for (boolean shelfFirst : List.of(false, true)) {
+                    advancement.value().criteria().keySet().forEach(criterion -> tracker.revokeCriterion(advancement, criterion));
+                    world.setBlockState(shelfPos, Blocks.AIR.getDefaultState());
+                    world.setBlockState(comparatorPos, Blocks.AIR.getDefaultState());
+                    BlockPos placedPos = shelfFirst ? comparatorPos : shelfPos;
+                    Block placedBlock = shelfFirst ? Blocks.COMPARATOR : shelf;
+                    var comparatorState = Blocks.COMPARATOR.getDefaultState().with(ComparatorBlock.FACING, direction);
+                    if (shelfFirst) world.setBlockState(shelfPos, shelf.getDefaultState());
+                    else world.setBlockState(comparatorPos, comparatorState);
+                    world.setBlockState(placedPos, shelfFirst ? comparatorState : shelf.getDefaultState());
+                    context.assertTrue(world.getBlockState(comparatorPos).isOf(Blocks.COMPARATOR), "Comparator remains on its support block");
+                    // Fire the same criterion that BlockItem placement calls after successful placement.
+                    net.minecraft.advancement.criterion.Criteria.PLACED_BLOCK.trigger(player, placedPos, new ItemStack(placedBlock));
+                    context.assertTrue(tracker.getProgress(advancement).isDone(), "Power of Books must complete for "
+                            + Registries.BLOCK.getId(shelf) + ", facing " + direction + ", shelf first " + shelfFirst);
+                    world.setBlockState(shelfPos, Blocks.AIR.getDefaultState());
+                    world.setBlockState(comparatorPos, Blocks.AIR.getDefaultState());
+                }
+                advancement.value().criteria().keySet().forEach(criterion -> tracker.revokeCriterion(advancement, criterion));
+                world.setBlockState(shelfPos, shelf.getDefaultState());
+                world.setBlockState(comparatorPos, Blocks.COMPARATOR.getDefaultState().with(ComparatorBlock.FACING, direction.getOpposite()));
+                net.minecraft.advancement.criterion.Criteria.PLACED_BLOCK.trigger(player, comparatorPos, new ItemStack(Items.COMPARATOR));
+                context.assertTrue(!tracker.getProgress(advancement).isDone(), "A comparator facing away from the shelf must not complete the advancement");
+                world.setBlockState(shelfPos, Blocks.AIR.getDefaultState());
+                world.setBlockState(comparatorPos, Blocks.AIR.getDefaultState());
+            }
+        }
+        advancement.value().criteria().keySet().forEach(criterion -> tracker.revokeCriterion(advancement, criterion));
+        world.setBlockState(shelfPos, Blocks.OAK_PLANKS.getDefaultState());
+        world.setBlockState(shelfPos.south(), Blocks.COMPARATOR.getDefaultState().with(ComparatorBlock.FACING, Direction.NORTH));
+        net.minecraft.advancement.criterion.Criteria.PLACED_BLOCK.trigger(player, shelfPos.south(), new ItemStack(Items.COMPARATOR));
+        context.assertTrue(!tracker.getProgress(advancement).isDone(), "Reading a different block must not complete Power of Books");
+        context.complete();
+    }
+
 }
