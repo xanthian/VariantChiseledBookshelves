@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.xanthian.variantchiseledbookshelves.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "LifecycledResourceManagerImplMixin",
+    "BlockEntityTypeAccessor"
+  ],
+  "client": [
+    "AtlasSourceManagerAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
