@@ -184,4 +184,43 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
         context.complete();
     }
 
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void mossStaysOnExteriorAndWoodKeepsItsHue(TestContext context) throws Exception {
+        try (var zip = new java.util.zip.ZipFile(System.getProperty("shelf.assetJar"))) {
+            String prefix = "assets/minecraft/textures/block/";
+            var oak = javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix + "oak_planks.png")));
+            var empty = javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix + "chiseled_bookshelf_empty.png")));
+            var base = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB);
+            var mossy = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB);
+            for (int y=0;y<16;y++) for(int x=0;x<16;x++) {
+                base.setRGB(x,y,(x+y)%2==0?0xff7e3a56:0xff5c3042);
+                // Different grain alignment must not be mistaken for decoration.
+                mossy.setRGB(x,y,(x+y)%2==0?0xff5c3042:0xff7e3a56);
+            }
+            mossy.setRGB(0,4,0xff315d20);
+            mossy.setRGB(4,4,0xff315d20);
+            mossy.setRGB(6,7,0xff315d20);
+            for (String face : new String[]{"empty", "occupied", "side", "top"}) {
+                var template = javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix + "chiseled_bookshelf_" + face + ".png")));
+                var reference = face.equals("occupied") ? empty : template;
+                boolean front = face.equals("empty") || face.equals("occupied");
+                var clean = ShelfTexture.compose(template,reference,oak,base,16,16);
+                var moss = ShelfTexture.compose(template,reference,oak,mossy,16,16,base,16,16,front);
+                context.assertTrue(moss.getRGB(0,4)!=clean.getRGB(0,4), "Moss is retained on exterior borders: " + face);
+                context.assertTrue(moss.getRGB(6,7)!=clean.getRGB(6,7), "Moss is retained on the middle rail: " + face);
+                if (face.equals("empty")) context.assertTrue(moss.getRGB(4,4)==clean.getRGB(4,4), "Moss must not enter the shelf recess");
+                if (!front) context.assertTrue(moss.getRGB(4,4)!=clean.getRGB(4,4), "Moss covers the carved side/top too");
+                for (int y=0;y<16;y++) for(int x=0;x<16;x++) {
+                    if (mossy.getRGB(x,y)!=0xff315d20) context.assertTrue(moss.getRGB(x,y)==clean.getRGB(x,y), "Plank grain must not obscure carvings");
+                    if (template.getRGB(x,y)!=reference.getRGB(x,y)) context.assertTrue(moss.getRGB(x,y)==template.getRGB(x,y), "Books keep their original pixels");
+                }
+                // A common brightness multiplier keeps the crimson RGB proportions at every shade.
+                int pixel = clean.getRGB(0,4);
+                double r=(pixel>>16)&255, g=(pixel>>8)&255, b=pixel&255;
+                context.assertTrue(Math.abs(r*53-g*109)<100 && Math.abs(r*76-b*109)<100, "Crimson hue must not inherit an oak/brown cast");
+            }
+        }
+        context.complete();
+    }
+
 }

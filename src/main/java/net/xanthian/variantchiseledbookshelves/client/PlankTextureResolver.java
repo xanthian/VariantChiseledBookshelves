@@ -19,6 +19,22 @@ public final class PlankTextureResolver {
     private PlankTextureResolver() {
     }
 
+    /** Resolve the undecorated plank through active packs before extracting moss as a separate surface layer. */
+    public static java.util.Optional<Resource> baseWood(ResourceManager resources, Identifier planks) throws IOException {
+        String path = planks.getPath();
+        String clean = path.replaceFirst("(^|/)mossy_", "$1");
+        if (clean.equals(path)) return java.util.Optional.empty();
+        for (String namespace : java.util.List.of(planks.getNamespace(), "minecraft")) {
+            Identifier candidate = Identifier.of(namespace, clean);
+            if (resources.getResource(candidate.withPrefixedPath("blockstates/").withSuffixedPath(".json")).isEmpty()
+                    && resources.getResource(candidate.withPrefixedPath("models/block/").withSuffixedPath(".json")).isEmpty()
+                    && resources.getResource(candidate.withPrefixedPath("textures/block/").withSuffixedPath(".png")).isEmpty()) continue;
+            try { return java.util.Optional.of(resolve(resources, candidate)); }
+            catch (IOException ignored) { /* Try the vanilla family when the provider has no usable base. */ }
+        }
+        return java.util.Optional.empty();
+    }
+
     public static Resource resolve(ResourceManager resources, Identifier planks) throws IOException {
         Identifier model = Identifier.of(planks.getNamespace(), "block/" + planks.getPath());
         var blockstate = resources.getResource(Identifier.of(planks.getNamespace(),

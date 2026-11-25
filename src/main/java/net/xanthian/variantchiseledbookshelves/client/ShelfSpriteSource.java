@@ -66,7 +66,13 @@ public final class ShelfSpriteSource implements AtlasSource {
             var animation = plankResource.getMetadata().decode(AnimationResourceMetadata.READER);
             SpriteDimensions frame = animation.map(value -> value.getSize(planks.getWidth(), planks.getHeight()))
                     .orElseGet(() -> new SpriteDimensions(planks.getWidth(), planks.getHeight()));
-            BufferedImage image = ShelfTexture.compose(template, oak, oakPlanks, planks, frame.width(), frame.height());
+            Resource baseResource = PlankTextureResolver.baseWood(resources, planksId).orElse(plankResource);
+            BufferedImage basePlanks = baseResource == plankResource ? planks : read(baseResource);
+            var baseAnimation = baseResource.getMetadata().decode(AnimationResourceMetadata.READER);
+            SpriteDimensions baseFrame = baseAnimation.map(value -> value.getSize(basePlanks.getWidth(), basePlanks.getHeight()))
+                    .orElseGet(() -> new SpriteDimensions(basePlanks.getWidth(), basePlanks.getHeight()));
+            BufferedImage image = ShelfTexture.compose(template, oak, oakPlanks, planks, frame.width(), frame.height(),
+                    basePlanks, baseFrame.width(), baseFrame.height(), face.equals("empty") || face.equals("occupied"));
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             if (!ImageIO.write(image, "PNG", bytes)) {
                 throw new IOException("PNG encoder unavailable");
