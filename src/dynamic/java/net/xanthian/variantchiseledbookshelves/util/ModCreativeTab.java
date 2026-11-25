@@ -24,8 +24,8 @@ public final class ModCreativeTab {
         Registry.register(Registries.ITEM_GROUP, Identifier.of(Initialise.MOD_ID, "variantchiseledbookshelves"),
                 FabricItemGroup.builder()
                         .displayName(Text.translatable("itemGroup.variantchiseledbookshelves"))
-                        
-                        
+
+
                         .icon(() -> Registries.ITEM.getOrEmpty(Identifier.of(Initialise.MOD_ID, "mangrove_chiseled_bookshelf"))
                                 .orElse(Items.CHISELED_BOOKSHELF).getDefaultStack())
                         .entries((context, entries) -> {
