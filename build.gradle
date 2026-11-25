@@ -6,8 +6,6 @@ plugins {
 version = project.mod_version
 group = project.maven_group
 
-sourceSets { main { java.setSrcDirs(['src/dynamic/java']); resources.setSrcDirs(['src/dynamic/resources']) } }
-
 loom {
     mixin.useLegacyMixinAp = true
 }

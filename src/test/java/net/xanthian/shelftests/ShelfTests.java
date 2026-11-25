@@ -100,4 +100,46 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
         context.complete();
     }
 
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void creativeLayoutCommand(TestContext context) throws Exception {
+        var world = context.getWorld();
+        var player = context.createMockCreativeServerPlayerInWorld();
+        var origin = context.getAbsolutePos(new BlockPos(0, 12, 0));
+        player.refreshPositionAndAngles(origin.getX(), origin.getY(), origin.getZ(), 0, 0);
+        var source = player.getCommandSource().withLevel(0).withSilent();
+        int total = DynamicShelves.variants().size() + 1;
+        var start = origin.south(2);
+        for (int index = 0; index < total; index++) {
+            var pos = start.east(index % 12 * 2).south(index / 12 * 3);
+            world.getChunk(pos);
+            for (int y = 0; y < 3; y++) world.setBlockState(pos.up(y), Blocks.AIR.getDefaultState());
+        }
+        world.setBlockState(start.up(), Blocks.STONE.getDefaultState());
+        var dispatcher = world.getServer().getCommandManager().getDispatcher();
+        int placed = dispatcher.execute("variantchiseledbookshelves layout", source);
+        context.assertTrue(placed == total - 1, "Non-operator creative players can place all clear displays");
+        context.assertTrue(world.getBlockState(start).isAir() && world.getBlockState(start.up()).isOf(Blocks.STONE), "Blocked column is left untouched");
+        for (int index = 1; index < total; index++) {
+            var pos = start.east(index % 12 * 2).south(index / 12 * 3);
+            var state = world.getBlockState(pos);
+            context.assertTrue(state.getBlock() instanceof ChiseledBookshelfBlock, "Display contains a functioning bookshelf");
+            context.assertTrue(state.get(net.minecraft.state.property.Properties.HORIZONTAL_FACING) == net.minecraft.util.math.Direction.NORTH, "Display faces the player");
+            context.assertTrue(world.getBlockState(pos.up(2)).getBlock() instanceof SlabBlock, "Display includes matching slab");
+            context.assertTrue(!world.isAir(pos.up()), "Display includes source plank");
+        }
+        context.assertTrue(dispatcher.execute("variantchiseledbookshelves lineup", source) == 0, "Lineup alias skips occupied displays");
+        var survival = new net.minecraft.server.network.ServerPlayerEntity(world.getServer(), world,
+                new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "survival-test"),
+                net.minecraft.network.packet.c2s.common.SyncedClientOptions.createDefault());
+        boolean denied = false;
+        try { dispatcher.execute("variantchiseledbookshelves layout", survival.getCommandSource().withLevel(0).withSilent()); }
+        catch (com.mojang.brigadier.exceptions.CommandSyntaxException expected) { denied = true; }
+        context.assertTrue(denied, "Survival players cannot use the layout command");
+        denied = false;
+        try { dispatcher.execute("variantchiseledbookshelves layout", world.getServer().getCommandSource().withSilent()); }
+        catch (com.mojang.brigadier.exceptions.CommandSyntaxException expected) { denied = true; }
+        context.assertTrue(denied, "Console cannot place a player layout");
+        context.complete();
+    }
+
 }
