@@ -73,12 +73,12 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
         for(int y=0;y<16;y++) for(int x=0;x<16;x++) { empty.setRGB(x,y,0xff987643); occupied.setRGB(x,y,0xff987643); }
         occupied.setRGB(2,2,0xff1256ab);
         for(int y=0;y<64;y++) for(int x=0;x<32;x++) plank.setRGB(x,y,y<32?0xffaabbcc:0xff998877);
-        var result = ShelfTexture.compose(occupied,empty,plank,32,32);
+        var result = ShelfTexture.compose(occupied,empty,empty,plank,32,32);
         context.assertTrue(result.getWidth()==32 && result.getHeight()==64,"Animation dimensions retained");
         context.assertTrue(result.getRGB(4,4)==0xff1256ab && result.getRGB(4,36)==0xff1256ab,"Book pixels survive each frame");
         context.assertTrue(result.getRGB(0,0)!=result.getRGB(0,32),"Wood follows animated source");
         boolean rejected=false;
-        try { ShelfTexture.compose(occupied,empty,plank,17,32); } catch(IllegalArgumentException expected) { rejected=true; }
+        try { ShelfTexture.compose(occupied,empty,empty,plank,17,32); } catch(IllegalArgumentException expected) { rejected=true; }
         context.assertTrue(rejected,"Invalid frame dimensions rejected");
         context.complete();
     }
@@ -86,16 +86,25 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
     public void vanillaAssetsAndSlotTemplates(TestContext context) throws Exception {
         try (var zip = new java.util.zip.ZipFile(System.getProperty("shelf.assetJar"))) {
             String prefix = "assets/minecraft/";
+            var oakPlanks = javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix + "textures/block/oak_planks.png")));
             String[] faces = {"top", "side", "empty", "occupied"};
             for (String face : faces) {
                 var template = javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix + "textures/block/chiseled_bookshelf_" + face + ".png")));
                 var empty = javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix + "textures/block/chiseled_bookshelf_" + (face.equals("occupied") ? "empty" : face) + ".png")));
+                var identity = ShelfTexture.compose(template,empty,oakPlanks,oakPlanks,16,16);
+                for (int y = 0; y < 16; y++) for (int x = 0; x < 16; x++)
+                    context.assertTrue(identity.getRGB(x,y) == template.getRGB(x,y), "Oak must reproduce the original vanilla carving exactly");
                 for (String wood : new String[]{"acacia","bamboo","birch","cherry","crimson","dark_oak","jungle","mangrove","spruce","warped"}) {
                     var plank = javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix + "textures/block/" + wood + "_planks.png")));
-                    var output = ShelfTexture.compose(template,empty,plank,plank.getWidth(),plank.getHeight());
+                    var output = ShelfTexture.compose(template,empty,oakPlanks,plank,plank.getWidth(),plank.getHeight());
                     int changed=0;
+                    var palette = new java.util.HashMap<Integer,Integer>();
                     for(int y=0;y<16;y++) for(int x=0;x<16;x++) {
                         if(template.getRGB(x,y)!=empty.getRGB(x,y)) context.assertTrue(output.getRGB(x,y)==template.getRGB(x,y),"Book decoration must be preserved");
+                        if(template.getRGB(x,y) == empty.getRGB(x,y)) {
+                            Integer previous = palette.putIfAbsent(template.getRGB(x,y), output.getRGB(x,y));
+                            context.assertTrue(previous == null || previous == output.getRGB(x,y), "A carving shade must stay uniform instead of picking up plank grain");
+                        }
                         if(output.getRGB(x,y)!=template.getRGB(x,y)) changed++;
                     }
                     context.assertTrue(changed>0,"Each wood face must be recoloured: " + wood + " " + face);
@@ -117,7 +126,7 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
         int total = DynamicShelves.variants().size() + 1;
         var start = origin.south(2);
         for (int index = 0; index < total; index++) {
-            var pos = start.east(index % 12 * 2).south(index / 12 * 3);
+            var pos = start.east(index);
             world.getChunk(pos);
             for (int y = 0; y < 3; y++) world.setBlockState(pos.up(y), Blocks.AIR.getDefaultState());
         }
@@ -127,12 +136,16 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
         context.assertTrue(placed == total - 1, "Non-operator creative players can place all clear displays");
         context.assertTrue(world.getBlockState(start).isAir() && world.getBlockState(start.up()).isOf(Blocks.STONE), "Blocked column is left untouched");
         for (int index = 1; index < total; index++) {
-            var pos = start.east(index % 12 * 2).south(index / 12 * 3);
+            var pos = start.east(index);
             var state = world.getBlockState(pos);
             context.assertTrue(state.getBlock() instanceof ChiseledBookshelfBlock, "Display contains a functioning bookshelf");
             context.assertTrue(state.get(net.minecraft.state.property.Properties.HORIZONTAL_FACING) == net.minecraft.util.math.Direction.NORTH, "Display faces the player");
-            context.assertTrue(world.getBlockState(pos.up(2)).getBlock() instanceof SlabBlock, "Display includes matching slab");
-            context.assertTrue(!world.isAir(pos.up()), "Display includes source plank");
+            var upper = world.getBlockState(pos.up(2));
+            context.assertTrue(upper.isOf(state.getBlock()), "Upper display uses the same bookshelf");
+            context.assertTrue(upper.get(net.minecraft.state.property.Properties.HORIZONTAL_FACING) == net.minecraft.util.math.Direction.EAST, "Upper bookshelf faces sideways");
+            var expectedPlank = state.isOf(Blocks.CHISELED_BOOKSHELF) ? Blocks.OAK_PLANKS :
+                    Registries.BLOCK.get(DynamicShelves.variants().stream().filter(v -> v.block() == state.getBlock()).findFirst().orElseThrow().planks());
+            context.assertTrue(world.getBlockState(pos.up()).isOf(expectedPlank), "Middle display is the matching source plank");
         }
         context.assertTrue(dispatcher.execute("variantchiseledbookshelves lineup", source) == 0, "Lineup alias skips occupied displays");
         var survival = new net.minecraft.server.network.ServerPlayerEntity(world.getServer(), world,
@@ -146,6 +159,28 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
         try { dispatcher.execute("variantchiseledbookshelves layout", world.getServer().getCommandSource().withSilent()); }
         catch (com.mojang.brigadier.exceptions.CommandSyntaxException expected) { denied = true; }
         context.assertTrue(denied, "Console cannot place a player layout");
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void plankGrainDoesNotObscureCarvings(TestContext context) {
+        var template = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB);
+        var oak = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB);
+        var wood = new BufferedImage(32,64,BufferedImage.TYPE_INT_ARGB);
+        for (int y=0;y<16;y++) for(int x=0;x<16;x++) {
+            oak.setRGB(x,y,0xffaa8855);
+            template.setRGB(x,y,x<8?0xff443322:0xffaa8855);
+        }
+        for(int y=0;y<64;y++) for(int x=0;x<32;x++) {
+            wood.setRGB(x,y,y<32 ? ((x+y)%2==0?0xff226600:0xff88bb33) : ((x+y)%2==0?0xff662233:0xffbb8899));
+        }
+        var output = ShelfTexture.compose(template,template,oak,wood,32,32);
+        context.assertTrue(output.getRGB(0,0)==output.getRGB(1,0), "Alternating plank grain must not break up a recessed shade");
+        context.assertTrue(output.getRGB(0,0)!=output.getRGB(16,0), "Recesses and frame retain distinct shades");
+        context.assertTrue(output.getRGB(0,0)!=output.getRGB(0,32), "Palette follows each animation frame");
+        wood.setRGB(0,0,0x00226600);
+        output = ShelfTexture.compose(template,template,oak,wood,32,32);
+        context.assertTrue((output.getRGB(0,0)>>>24)==0, "Resource-pack transparency is retained");
         context.complete();
     }
 

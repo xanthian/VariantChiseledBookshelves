@@ -5,7 +5,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.ChiseledBookshelfBlock;
+import net.minecraft.state.property.Properties;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -20,13 +20,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/** Places each bookshelf with its source plank and slab, without replacing existing blocks. */
+/** A straight line of front-facing shelf, source plank, and sideways-facing shelf displays. */
 public final class ShelfLineupCommand {
-    private static final int COLUMNS = 12;
     private static final SimpleCommandExceptionType CREATIVE_REQUIRED = new SimpleCommandExceptionType(
             Text.literal("Only players in Creative mode can place a bookshelf layout."));
 
-    private record Column(Block shelf, Block plank, Block slab) {}
+    private record Column(Block shelf, Block plank) {}
 
     private ShelfLineupCommand() {}
 
@@ -47,10 +46,9 @@ public final class ShelfLineupCommand {
         ServerPlayerEntity player = (ServerPlayerEntity) source.getEntity();
         ServerWorld world = source.getWorld();
         List<Column> columns = new ArrayList<>();
-        columns.add(new Column(Blocks.CHISELED_BOOKSHELF, Blocks.OAK_PLANKS, Blocks.OAK_SLAB));
+        columns.add(new Column(Blocks.CHISELED_BOOKSHELF, Blocks.OAK_PLANKS));
         for (var variant : DynamicShelves.variants()) {
-            var slab = (net.minecraft.item.BlockItem) Registries.ITEM.get(variant.slab());
-            columns.add(new Column(variant.block(), Registries.BLOCK.get(variant.planks()), slab.getBlock()));
+            columns.add(new Column(variant.block(), Registries.BLOCK.get(variant.planks())));
         }
         columns.sort(Comparator.comparing(column -> column.shelf() == Blocks.CHISELED_BOOKSHELF
                 ? "oak_chiseled_bookshelf" : Registries.BLOCK.getId(column.shelf()).toString()));
@@ -60,17 +58,19 @@ public final class ShelfLineupCommand {
         BlockPos start = BlockPos.ofFloored(source.getPosition()).offset(forward, 2);
         int placed = 0;
         for (int index = 0; index < columns.size(); index++) {
-            BlockPos pos = start.offset(right, index % COLUMNS * 2).offset(forward, index / COLUMNS * 3);
+            BlockPos pos = start.offset(right, index);
+            if (!world.isInBuildLimit(pos.up(2)) || !world.getWorldBorder().contains(pos)) continue;
+            world.getChunk(pos);
             if (!isClear(world, player, pos) || !isClear(world, player, pos.up()) || !isClear(world, player, pos.up(2))) continue;
             Column column = columns.get(index);
-            world.setBlockState(pos, column.shelf().getDefaultState().with(net.minecraft.state.property.Properties.HORIZONTAL_FACING, forward.getOpposite()), Block.NOTIFY_ALL);
+            world.setBlockState(pos, column.shelf().getDefaultState().with(Properties.HORIZONTAL_FACING, forward.getOpposite()), Block.NOTIFY_ALL);
             world.setBlockState(pos.up(), column.plank().getDefaultState(), Block.NOTIFY_ALL);
-            world.setBlockState(pos.up(2), column.slab().getDefaultState(), Block.NOTIFY_ALL);
+            world.setBlockState(pos.up(2), column.shelf().getDefaultState().with(Properties.HORIZONTAL_FACING, right), Block.NOTIFY_ALL);
             placed++;
         }
         int count = placed;
         source.sendFeedback(() -> Text.literal("Placed " + count + " bookshelf displays. Skipped "
-                + (columns.size() - count) + " blocked, protected or unloaded spaces."), false);
+                + (columns.size() - count) + " blocked or protected spaces."), false);
         return placed;
     }
 
