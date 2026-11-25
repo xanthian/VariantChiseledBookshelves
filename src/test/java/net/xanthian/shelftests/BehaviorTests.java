@@ -178,4 +178,54 @@ public class BehaviorTests implements FabricGameTest {
         context.complete();
     }
 
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void mixedWoodCraftingKeepsUniformVariants(TestContext context) {
+        var world = context.getWorld();
+        var recipes = world.getServer().getRecipeManager();
+        var mixedId = net.xanthian.variantchiseledbookshelves.recipe.MixedWoodRecipe.ID;
+        context.assertTrue(recipes.get(mixedId).isPresent(), "Mixed wood recipe is loaded");
+        var oak = bookshelfGrid(Items.OAK_PLANKS, Items.OAK_SLAB);
+        assertBookshelfCraft(context, oak, Items.CHISELED_BOOKSHELF, false);
+        for (var variant : DynamicShelves.variants()) {
+            Item planks = Registries.ITEM.get(variant.ingredient());
+            Item slab = Registries.ITEM.get(variant.slab());
+            assertBookshelfCraft(context, bookshelfGrid(planks, slab), variant.block().asItem(), false);
+            assertBookshelfCraft(context, bookshelfGrid(planks, Items.OAK_SLAB), Items.CHISELED_BOOKSHELF, true);
+            assertBookshelfCraft(context, bookshelfGrid(Items.OAK_PLANKS, slab), Items.CHISELED_BOOKSHELF, true);
+            var mixedPlanks = new ArrayList<ItemStack>(oak.getStacks());
+            mixedPlanks.set(0, new ItemStack(planks));
+            assertBookshelfCraft(context, net.minecraft.recipe.input.CraftingRecipeInput.create(3, 3, mixedPlanks), Items.CHISELED_BOOKSHELF, true);
+            var mixedSlabs = new ArrayList<ItemStack>(oak.getStacks());
+            mixedSlabs.set(4, new ItemStack(slab));
+            assertBookshelfCraft(context, net.minecraft.recipe.input.CraftingRecipeInput.create(3, 3, mixedSlabs), Items.CHISELED_BOOKSHELF, true);
+        }
+        var invalid = new ArrayList<ItemStack>(oak.getStacks());
+        invalid.set(3, new ItemStack(Items.STONE_SLAB));
+        context.assertTrue(recipes.getAllMatches(net.minecraft.recipe.RecipeType.CRAFTING, net.minecraft.recipe.input.CraftingRecipeInput.create(3, 3, invalid), world).isEmpty(), "Stone slabs cannot craft a bookshelf");
+        invalid = new ArrayList<ItemStack>(oak.getStacks());
+        invalid.set(4, ItemStack.EMPTY);
+        context.assertTrue(recipes.getAllMatches(net.minecraft.recipe.RecipeType.CRAFTING, net.minecraft.recipe.input.CraftingRecipeInput.create(3, 3, invalid), world).isEmpty(), "Incomplete pattern cannot craft a bookshelf");
+        invalid = new ArrayList<ItemStack>(oak.getStacks());
+        java.util.Collections.swap(invalid, 0, 3);
+        context.assertTrue(recipes.getAllMatches(net.minecraft.recipe.RecipeType.CRAFTING, net.minecraft.recipe.input.CraftingRecipeInput.create(3, 3, invalid), world).isEmpty(), "Planks belong in top and bottom rows, slabs in the middle");
+        context.complete();
+    }
+
+    private static net.minecraft.recipe.input.CraftingRecipeInput bookshelfGrid(Item planks, Item slab) {
+        List<ItemStack> stacks = new ArrayList<>();
+        for (int slot = 0; slot < 9; slot++) stacks.add(new ItemStack(slot >= 3 && slot <= 5 ? slab : planks));
+        return net.minecraft.recipe.input.CraftingRecipeInput.create(3, 3, stacks);
+    }
+
+    private static void assertBookshelfCraft(TestContext context, net.minecraft.recipe.input.CraftingRecipeInput input, Item expected, boolean mixed) {
+        var world = context.getWorld();
+        var matches = world.getServer().getRecipeManager().getAllMatches(net.minecraft.recipe.RecipeType.CRAFTING, input, world);
+        context.assertTrue(matches.size() == 1, "Exactly one recipe must match, avoiding recipe ordering conflicts; found " + matches.size());
+        var recipe = matches.getFirst();
+        var output = recipe.value().craft(input, world.getRegistryManager());
+        context.assertTrue(output.isOf(expected) && output.getCount() == 1, "Recipe must produce one " + Registries.ITEM.getId(expected));
+        context.assertTrue(recipe.id().equals(net.xanthian.variantchiseledbookshelves.recipe.MixedWoodRecipe.ID) == mixed,
+                "Matching wood keeps its normal recipe; mixed wood uses the vanilla fallback");
+    }
+
 }

@@ -11,6 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.xanthian.variantchiseledbookshelves.Initialise;
 import net.xanthian.variantchiseledbookshelves.block.DynamicShelves;
+import net.xanthian.variantchiseledbookshelves.recipe.MixedWoodRecipe;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -78,6 +79,8 @@ public final class GeneratedShelfPack implements ResourcePack {
         names.put("itemGroup.variantchiseledbookshelves", "Variant Chiseled Bookshelves");
         names.put("tag.item.variantchiseledbookshelves.chiseled_bookshelves", "Chiseled Bookshelves");
         names.put("tag.item.c.chiseled_bookshelves", "Chiseled Bookshelves");
+        names.put("tag.item.variantchiseledbookshelves.bookshelf_planks", "Bookshelf Planks");
+        names.put("tag.item.variantchiseledbookshelves.bookshelf_slabs", "Bookshelf Slabs");
         put(Identifier.of(Initialise.MOD_ID, "en_us"), "lang/", names);
         put(Identifier.ofVanilla("en_us"), "lang/", Map.of("block.minecraft.chiseled_bookshelf", "Oak Chiseled Bookshelf"));
         put(Identifier.ofVanilla("blocks"), "atlases/", Map.of("sources", List.of(Map.of("type", ATLAS_SOURCE_ID.toString()))));
@@ -114,6 +117,12 @@ public final class GeneratedShelfPack implements ResourcePack {
                                     "levels", Map.of("min", 1))))))),
                     "entries", List.of(Map.of("type", "minecraft:item", "name", id.toString()))))));
         }
+
+        putTag(MixedWoodRecipe.PLANKS_ID, "item", java.util.stream.Stream.concat(java.util.stream.Stream.of("#minecraft:planks"),
+                variants.stream().map(variant -> variant.ingredient().toString())).distinct().toList());
+        putTag(MixedWoodRecipe.SLABS_ID, "item", java.util.stream.Stream.concat(java.util.stream.Stream.of("#minecraft:wooden_slabs"),
+                variants.stream().map(variant -> variant.slab().toString())).distinct().toList());
+        put(MixedWoodRecipe.ID, "recipe/", Map.of("type", MixedWoodRecipe.ID.toString(), "category", "building"));
 
         generatePowerOfBooksAdvancement();
 

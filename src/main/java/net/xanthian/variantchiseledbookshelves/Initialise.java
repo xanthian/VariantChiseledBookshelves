@@ -5,5 +5,5 @@ import net.xanthian.variantchiseledbookshelves.block.ShelfBehavior;
 import net.xanthian.variantchiseledbookshelves.util.ModCreativeTab;
 public final class Initialise implements ModInitializer {
  public static final String MOD_ID = "variantchiseledbookshelves";
- public void onInitialize() { DynamicShelves.register(); ShelfBehavior.register(); ModCreativeTab.registerItemGroup(); ShelfLineupCommand.register(); }
+ public void onInitialize() { net.xanthian.variantchiseledbookshelves.recipe.MixedWoodRecipe.register(); DynamicShelves.register(); ShelfBehavior.register(); ModCreativeTab.registerItemGroup(); ShelfLineupCommand.register(); }
 }
