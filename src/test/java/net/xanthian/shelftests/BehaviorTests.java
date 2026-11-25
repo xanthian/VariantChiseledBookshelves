@@ -131,7 +131,7 @@ public class BehaviorTests implements FabricGameTest {
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void powerOfBooksAdvancementRecognizesEveryWood(TestContext context) {
         var world = context.getWorld();
-        var player = context.createMockCreativeServerPlayerInWorld();
+        var player = TestPlayers.creative(context);
         var advancement = world.getServer().getAdvancementLoader().get(net.minecraft.util.Identifier.ofVanilla("adventure/read_power_of_chiseled_bookshelf"));
         context.assertTrue(advancement != null, "The vanilla Power of Books advancement is loaded");
         var tracker = player.getAdvancementTracker();

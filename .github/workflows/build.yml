@@ -23,7 +23,13 @@ jobs:
       - uses: gradle/actions/wrapper-validation@v5
       - run: chmod +x gradlew
       - run: ./gradlew build -Pminecraft_version=${{ matrix.minecraft }} -Pyarn_mappings=${{ matrix.mappings }} -Pfabric_version=${{ matrix.api }}
+      # The 1.21 jar supports both game versions. Both matrix entries still run all tests.
       - uses: actions/upload-artifact@v6
+        if: matrix.minecraft == '1.21'
         with:
-          name: variantchiseledbookshelves-${{ matrix.minecraft }}
-          path: build/libs/
+          name: variantchiseledbookshelves
+          if-no-files-found: error
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
+            !build/libs/*-dev.jar

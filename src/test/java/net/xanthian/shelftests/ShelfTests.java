@@ -110,7 +110,7 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void creativeLayoutCommand(TestContext context) throws Exception {
         var world = context.getWorld();
-        var player = context.createMockCreativeServerPlayerInWorld();
+        var player = TestPlayers.creative(context);
         var origin = context.getAbsolutePos(new BlockPos(0, 12, 0));
         player.refreshPositionAndAngles(origin.getX(), origin.getY(), origin.getZ(), 0, 0);
         var source = player.getCommandSource().withLevel(0).withSilent();
