@@ -58,8 +58,10 @@ public final class ShelfBehavior {
     private static Integer fuelTime(DynamicShelves.Variant variant) {
         try {
             Item source = Registries.ITEM.get(variant.ingredient());
-            if (!variant.nonFlammable() && !Registries.ITEM.getEntry(source).isIn(ItemTags.NON_FLAMMABLE_WOOD)) {
-                return FUEL.get(source);
+            if (!variant.nonFlammable() && !Registries.ITEM.getEntry(source).isIn(ItemTags.NON_FLAMMABLE_WOOD)
+                    && Registries.BLOCK.get(variant.planks()).getDefaultState().isBurnable()) {
+                Integer sourceTime = FUEL.get(source);
+                return sourceTime != null && sourceTime > 0 ? 300 : null;
             }
         } catch (RuntimeException exception) {
             LogUtils.getLogger().warn("Could not inherit fuel behavior from {}", variant.ingredient(), exception);

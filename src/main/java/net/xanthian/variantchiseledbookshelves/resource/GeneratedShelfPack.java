@@ -109,7 +109,9 @@ public final class GeneratedShelfPack implements ResourcePack {
             putShapedRecipe(id, variant.ingredient(), variant.slab(), id);
             putRecipeUnlock(id, "has_planks", Map.of("items", variant.ingredient().toString()));
             put(id, "loot_table/blocks/", Map.of("type", "minecraft:block", "pools", List.of(Map.of(
-                    "rolls", 1, "conditions", List.of(Map.of("condition", "minecraft:survives_explosion")),
+                    "rolls", 1, "conditions", List.of(Map.of("condition", "minecraft:match_tool", "predicate", Map.of(
+                            "predicates", Map.of("minecraft:enchantments", List.of(Map.of("enchantments", "minecraft:silk_touch",
+                                    "levels", Map.of("min", 1))))))),
                     "entries", List.of(Map.of("type", "minecraft:item", "name", id.toString()))))));
         }
 

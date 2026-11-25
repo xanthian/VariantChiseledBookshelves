@@ -23,6 +23,10 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
         add("missing_planks", new Block(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)));
         add("odd_boards", new Block(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)));
         add("half_board", new SlabBlock(AbstractBlock.Settings.copy(Blocks.OAK_SLAB)));
+        add("fireproof_planks", new Block(AbstractBlock.Settings.create().strength(1.5f)));
+        add("fireproof_slab", new SlabBlock(AbstractBlock.Settings.create().strength(1.5f)));
+        net.fabricmc.fabric.api.registry.FuelRegistry.INSTANCE.add(Registries.ITEM.get(Identifier.of("shelf_tests", "fixture_planks")), 100);
+        net.fabricmc.fabric.api.registry.FuelRegistry.INSTANCE.add(Registries.ITEM.get(Identifier.of("shelf_tests", "fireproof_planks")), 300);
         add("fixture_slab", new SlabBlock(AbstractBlock.Settings.copy(Blocks.OAK_SLAB)));
     }
     private static void add(String name, Block block) {
@@ -32,8 +36,11 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
     }
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void discoveryResourcesAndInventory(TestContext context) throws Exception {
+        var tab = Registries.ITEM_GROUP.get(Identifier.of("variantchiseledbookshelves", "variantchiseledbookshelves"));
+        context.assertTrue(tab.getTexture().equals(Identifier.ofVanilla("textures/gui/container/creative_inventory/tab_variantchiseledbookshelves.png")), "Creative tab uses its original artwork");
+        context.assertTrue(!tab.shouldRenderName(), "Artwork supplies the creative tab heading");
         var variants = DynamicShelves.variants();
-        context.assertTrue(variants.size() == 12, "Ten vanilla woods and both fixtures must register");
+        context.assertTrue(variants.size() == 13, "Ten vanilla woods and three fixtures must register");
         context.assertTrue(variants.stream().noneMatch(v -> v.planks().getPath().equals("missing_planks")), "Plank without a slab must be skipped");
         var fixture = variants.stream().filter(v -> v.planks().getPath().equals("fixture_planks")).findFirst().orElseThrow();
         context.assertTrue(fixture.slab().equals(Identifier.of("shelf_tests", "fixture_slab")), "Use the matching slab");
