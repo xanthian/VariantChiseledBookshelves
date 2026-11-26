@@ -19,6 +19,7 @@ public final class ShelfTexture {
         if (frameWidth <= 0 || frameHeight <= 0 || planks.getWidth() % frameWidth != 0 || planks.getHeight() % frameHeight != 0)
             throw new IllegalArgumentException("Plank image must contain complete animation frames");
         double[] oak = averageColour(oakPlanks, 0, 0, oakPlanks.getWidth(), oakPlanks.getHeight());
+        var exteriorShades = exteriorShades(template, empty, front);
         BufferedImage result = new BufferedImage(planks.getWidth(), planks.getHeight(), BufferedImage.TYPE_INT_ARGB);
         for (int fy = 0; fy < planks.getHeight(); fy += frameHeight) {
             for (int fx = 0; fx < planks.getWidth(); fx += frameWidth) {
@@ -32,6 +33,7 @@ public final class ShelfTexture {
                 var baseColours = new java.util.HashSet<Integer>();
                 for (int y = 0; y < baseHeight; y++) for (int x = 0; x < baseWidth; x++)
                     baseColours.add(basePlanks.getRGB(bx + x, by + y) & 0xffffff);
+                var sampledPalette = sampledPalette(basePlanks, bx, by, baseWidth, baseHeight, exteriorShades);
                 for (int y = 0; y < frameHeight; y++) for (int x = 0; x < frameWidth; x++) {
                     int tx = x * template.getWidth() / frameWidth;
                     int ty = y * template.getHeight() / frameHeight;
@@ -49,13 +51,53 @@ public final class ShelfTexture {
                     boolean overlay = !baseColours.contains(source & 0xffffff) && (!front || border);
                     double shade = luminance(original) / Math.max(1, luminance(oak));
                     int colour = overlay ? tint(new double[]{(source >> 16) & 255, (source >> 8) & 255, source & 255}, shade)
-                            : oakIdentity ? original : tint(wood, shade);
+                            : oakIdentity ? original : front && !border ? tint(wood, shade) : sampledPalette.get(original & 0xffffff);
                     int alpha = (original >>> 24) * (source >>> 24) / 255;
                     result.setRGB(fx + x, fy + y, alpha << 24 | colour & 0xffffff);
                 }
             }
         }
         return result;
+    }
+
+    private static java.util.List<Integer> exteriorShades(BufferedImage template, BufferedImage empty, boolean front) {
+        var shades = new java.util.HashSet<Integer>();
+        for (int y = 0; y < template.getHeight(); y++) for (int x = 0; x < template.getWidth(); x++) {
+            int original = template.getRGB(x, y);
+            int reference = empty.getRGB(x * empty.getWidth() / template.getWidth(), y * empty.getHeight() / template.getHeight());
+            int ux = x * 16 / template.getWidth(), uy = y * 16 / template.getHeight();
+            boolean border = ux == 0 || ux == 15 || uy == 0 || uy == 7 || uy == 8 || uy == 15;
+            if ((original >>> 24) != 0 && original == reference && (!front || border)) shades.add(original & 0xffffff);
+        }
+        return shades.stream().sorted(java.util.Comparator.comparingDouble((Integer colour) -> luminance(colour)).thenComparingInt(Integer::intValue)).toList();
+    }
+
+    private static java.util.Map<Integer, Integer> sampledPalette(BufferedImage image, int left, int top,
+                                                                 int width, int height, java.util.List<Integer> shades) {
+        var weights = new java.util.HashMap<Integer, Long>();
+        long total = 0;
+        for (int y = top; y < top + height; y++) for (int x = left; x < left + width; x++) {
+            int pixel = image.getRGB(x, y), alpha = pixel >>> 24;
+            if (alpha == 0) continue;
+            weights.merge(pixel & 0xffffff, (long) alpha, Long::sum);
+            total += alpha;
+        }
+        var colours = weights.keySet().stream().sorted(java.util.Comparator.comparingDouble((Integer colour) -> luminance(colour)).thenComparingInt(Integer::intValue)).toList();
+        var mapped = new java.util.HashMap<Integer, Integer>();
+        for (int index = 0; index < shades.size(); index++) {
+            // Frequency-weighted source colours retain real highlights and shadows. Ignore isolated outlier pixels.
+            double rank = shades.size() == 1 ? .5 : (double) index / (shades.size() - 1);
+            double target = total * (.03 + .94 * rank);
+            long cumulative = 0;
+            int selected = 0;
+            for (int colour : colours) {
+                cumulative += weights.get(colour);
+                selected = colour;
+                if (cumulative >= target) break;
+            }
+            mapped.put(shades.get(index), selected);
+        }
+        return mapped;
     }
 
     private static double luminance(int colour) {

@@ -91,13 +91,14 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
             for (String face : faces) {
                 var template = javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix + "textures/block/chiseled_bookshelf_" + face + ".png")));
                 var empty = javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix + "textures/block/chiseled_bookshelf_" + (face.equals("occupied") ? "empty" : face) + ".png")));
-                var identity = ShelfTexture.compose(template,empty,oakPlanks,oakPlanks,16,16);
+                var identity = ShelfTexture.compose(template,empty,oakPlanks,oakPlanks,16,16,oakPlanks,16,16,face.equals("empty") || face.equals("occupied"));
                 for (int y = 0; y < 16; y++) for (int x = 0; x < 16; x++)
                     context.assertTrue(identity.getRGB(x,y) == template.getRGB(x,y), "Oak must reproduce the original vanilla carving exactly");
                 for (String wood : new String[]{"acacia","bamboo","birch","cherry","crimson","dark_oak","jungle","mangrove","spruce","warped"}) {
                     var plank = javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix + "textures/block/" + wood + "_planks.png")));
-                    var output = ShelfTexture.compose(template,empty,oakPlanks,plank,plank.getWidth(),plank.getHeight());
+                    var output = ShelfTexture.compose(template,empty,oakPlanks,plank,plank.getWidth(),plank.getHeight(),plank,plank.getWidth(),plank.getHeight(),face.equals("empty") || face.equals("occupied"));
                     int changed=0;
+                    var recessHash = new java.util.zip.CRC32();
                     var palette = new java.util.HashMap<Integer,Integer>();
                     for(int y=0;y<16;y++) for(int x=0;x<16;x++) {
                         if(template.getRGB(x,y)!=empty.getRGB(x,y)) context.assertTrue(output.getRGB(x,y)==template.getRGB(x,y),"Book decoration must be preserved");
@@ -105,7 +106,17 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
                             Integer previous = palette.putIfAbsent(template.getRGB(x,y), output.getRGB(x,y));
                             context.assertTrue(previous == null || previous == output.getRGB(x,y), "A carving shade must stay uniform instead of picking up plank grain");
                         }
+                        if (face.equals("empty") && x>0 && x<15 && y!=0 && y!=7 && y!=8 && y!=15) {
+                            int pixel = output.getRGB(x,y);
+                            recessHash.update(pixel>>>24); recessHash.update(pixel>>>16); recessHash.update(pixel>>>8); recessHash.update(pixel);
+                        }
                         if(output.getRGB(x,y)!=template.getRGB(x,y)) changed++;
+                    }
+                    if (face.equals("empty")) {
+                        var originalRecesses = java.util.Map.of("acacia",2339093439L,"bamboo",1845664137L,"birch",192852155L,
+                                "cherry",1449095171L,"crimson",2063140172L,"dark_oak",3815308245L,"jungle",2195393557L,
+                                "mangrove",1221471609L,"spruce",1176680484L,"warped",372246074L);
+                        context.assertTrue(recessHash.getValue()==originalRecesses.get(wood), "Existing recess pixels must remain unchanged: " + wood);
                     }
                     context.assertTrue(changed>0,"Each wood face must be recoloured: " + wood + " " + face);
                 }
@@ -204,7 +215,7 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
                 var template = javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix + "chiseled_bookshelf_" + face + ".png")));
                 var reference = face.equals("occupied") ? empty : template;
                 boolean front = face.equals("empty") || face.equals("occupied");
-                var clean = ShelfTexture.compose(template,reference,oak,base,16,16);
+                var clean = ShelfTexture.compose(template,reference,oak,base,16,16,base,16,16,front);
                 var moss = ShelfTexture.compose(template,reference,oak,mossy,16,16,base,16,16,front);
                 context.assertTrue(moss.getRGB(0,4)!=clean.getRGB(0,4), "Moss is retained on exterior borders: " + face);
                 context.assertTrue(moss.getRGB(6,7)!=clean.getRGB(6,7), "Moss is retained on the middle rail: " + face);
@@ -214,10 +225,48 @@ public class ShelfTests implements ModInitializer, FabricGameTest {
                     if (mossy.getRGB(x,y)!=0xff315d20) context.assertTrue(moss.getRGB(x,y)==clean.getRGB(x,y), "Plank grain must not obscure carvings");
                     if (template.getRGB(x,y)!=reference.getRGB(x,y)) context.assertTrue(moss.getRGB(x,y)==template.getRGB(x,y), "Books keep their original pixels");
                 }
-                // A common brightness multiplier keeps the crimson RGB proportions at every shade.
-                int pixel = clean.getRGB(0,4);
-                double r=(pixel>>16)&255, g=(pixel>>8)&255, b=pixel&255;
-                context.assertTrue(Math.abs(r*53-g*109)<100 && Math.abs(r*76-b*109)<100, "Crimson hue must not inherit an oak/brown cast");
+                context.assertTrue(java.util.Set.of(0xff7e3a56,0xff5c3042).contains(clean.getRGB(0,4)), "Exterior colour must come directly from the clean plank palette");
+                if (face.equals("empty")) {
+                    int pixel = clean.getRGB(4,4);
+                    double r=(pixel>>16)&255, g=(pixel>>8)&255, b=pixel&255;
+                    context.assertTrue(Math.abs(r*53-g*109)<100 && Math.abs(r*76-b*109)<100, "Existing recess shading is retained");
+                }
+            }
+        }
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void animatedPalettesUseSampledColoursAndKeepMoss(TestContext context) throws Exception {
+        try (var zip = new java.util.zip.ZipFile(System.getProperty("shelf.assetJar"))) {
+            String prefix="assets/minecraft/textures/block/";
+            var oak=javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix+"oak_planks.png")));
+            var template=javax.imageio.ImageIO.read(zip.getInputStream(zip.getEntry(prefix+"chiseled_bookshelf_side.png")));
+            var base=new BufferedImage(16,32,BufferedImage.TYPE_INT_ARGB);
+            var decorated=new BufferedImage(32,64,BufferedImage.TYPE_INT_ARGB);
+            int[][] colours={{0xffcd8580,0xffe7bab4,0xffe7cac5},{0xff5c3042,0xff7e3a56,0xff863e5a}};
+            for(int frame=0;frame<2;frame++) {
+                for(int y=0;y<16;y++) for(int x=0;x<16;x++) base.setRGB(x,frame*16+y,colours[frame][x%3]);
+                for(int y=0;y<32;y++) for(int x=0;x<32;x++) decorated.setRGB(x,frame*32+y,colours[frame][x/2%3]);
+                decorated.setRGB(0,frame*32+8,0xff315d20);
+            }
+            var clean=ShelfTexture.compose(template,template,oak,base,16,16);
+            var moss=ShelfTexture.compose(template,template,oak,decorated,32,32,base,16,16,false);
+            context.assertTrue(moss.getWidth()==32 && moss.getHeight()==64,"High resolution animation layout retained");
+            for(int frame=0;frame<2;frame++) {
+                var palette=java.util.Set.of(colours[frame][0],colours[frame][1],colours[frame][2]);
+                var used=new java.util.HashSet<Integer>();
+                for(int y=0;y<32;y++) for(int x=0;x<32;x++) {
+                    int pixel=moss.getRGB(x,frame*32+y);
+                    if(x==0 && y==8) {
+                        context.assertTrue(pixel!=clean.getRGB(0,frame*16+4),"Moss remains visible in each animation frame");
+                    } else {
+                        context.assertTrue(palette.contains(pixel),"Exterior shades must be real colours from this frame's plank palette");
+                        context.assertTrue(pixel==clean.getRGB(x/2,frame*16+y/2),"Moss must not change neighbouring wood colours or carving geometry");
+                        used.add(pixel);
+                    }
+                }
+                context.assertTrue(used.size()==3,"Highlights, midtones and shadows all remain visible");
             }
         }
         context.complete();
