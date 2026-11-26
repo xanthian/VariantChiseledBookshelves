@@ -75,7 +75,7 @@ public final class ShelfLineupCommand {
     }
 
     private static boolean isClear(ServerWorld world, ServerPlayerEntity player, BlockPos pos) {
-        return world.isInBuildLimit(pos) && world.getWorldBorder().contains(pos) && world.isChunkLoaded(pos)
+        return world.isInBuildLimit(pos) && world.getWorldBorder().contains(pos) && world.getChunkManager().isChunkLoaded(pos.getX() >> 4, pos.getZ() >> 4)
                 && world.canPlayerModifyAt(player, pos) && world.isAir(pos);
     }
 }
