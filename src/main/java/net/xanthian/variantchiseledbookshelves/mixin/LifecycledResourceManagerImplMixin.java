@@ -13,8 +13,18 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Inserts the in-memory shelf pack into each newly constructed resource manager.
+ * Client managers receive generated models, blockstates, language entries and atlas definitions;
+ * server-data managers receive recipes, loot tables, tags and the extended Power of Books advancement.
+ * A fresh pack is built from the registered variant catalogue for each manager, including reloads.
+ */
 @Mixin(LifecycledResourceManagerImpl.class)
 abstract class LifecycledResourceManagerImplMixin {
+    /**
+     * Replaces only the constructor's pack-list argument, before the manager processes its packs.
+     * The captured ResourceType argument selects client assets or server data for the generated pack.
+     */
     @ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true)
     private static List<ResourcePack> variantchiseledbookshelves$addGeneratedPack(
             List<ResourcePack> packs, @Local(argsOnly = true) ResourceType type) {
@@ -22,7 +32,9 @@ abstract class LifecycledResourceManagerImplMixin {
         if (variants.isEmpty()) {
             return packs;
         }
+        // Copy the supplied list because callers may pass an immutable or shared list.
         List<ResourcePack> result = new ArrayList<>(packs);
+        // Packs are ordered from low to high priority. If vanilla is absent, use the lowest priority.
         int insertion = 0;
         for (int index = 0; index < packs.size(); index++) {
             if (packs.get(index).getId().equals("vanilla")) {
@@ -30,6 +42,7 @@ abstract class LifecycledResourceManagerImplMixin {
                 break;
             }
         }
+        // Generated defaults override vanilla, while later mod and user packs can still override them.
         result.add(insertion, new GeneratedShelfPack(type, variants));
         return result;
     }
