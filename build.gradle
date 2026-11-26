@@ -3,6 +3,18 @@ plugins {
     id 'maven-publish'
 }
 
+// Loom also supplies project repositories. Prepend the mirror so Central dependencies use it first.
+def centralMirror = repositories.maven {
+    name = 'MavenCentralMirror'
+    url = 'https://maven-central.storage-download.googleapis.com/maven2/'
+    content {
+        excludeGroupByRegex 'net\\.fabricmc(\\..*)?'
+        excludeGroup 'com.mojang'
+    }
+}
+repositories.remove(centralMirror)
+repositories.addFirst(centralMirror)
+
 version = project.mod_version
 group = project.maven_group
 

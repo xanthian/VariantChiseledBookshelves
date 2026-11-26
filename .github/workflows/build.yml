@@ -6,6 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     strategy:
+      max-parallel: 1
       matrix:
         include:
           - minecraft: '1.21'
@@ -20,7 +21,9 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - uses: gradle/actions/wrapper-validation@v5
+      - uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-read-only: ${{ github.event_name != 'push' }}
       - run: chmod +x gradlew
       - run: ./gradlew build -Pminecraft_version=${{ matrix.minecraft }} -Pyarn_mappings=${{ matrix.mappings }} -Pfabric_version=${{ matrix.api }}
       # The 1.21 jar supports both game versions. Both matrix entries still run all tests.

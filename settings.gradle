@@ -1,5 +1,15 @@
 pluginManagement {
     repositories {
+        // Central's shared CI endpoints can return 429; prefer the Google-hosted Central mirror.
+        maven {
+            name = 'MavenCentralMirror'
+            url = 'https://maven-central.storage-download.googleapis.com/maven2/'
+            content {
+                excludeGroup 'fabric-loom'
+                excludeGroupByRegex 'net\\.fabricmc(\\..*)?'
+            }
+        }
+
         maven {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
